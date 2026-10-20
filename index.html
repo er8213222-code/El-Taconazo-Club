@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7f1d1d">
+  <title>El Taconazo Club</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8ed;
+      color: #292019;
+    }
+    header {
+      background: #7f1d1d;
+      color: white;
+      text-align: center;
+      padding: 30px 16px;
+    }
+    header h1 { margin: 0; font-size: 30px; }
+    header p { margin-bottom: 0; }
+    main {
+      max-width: 480px;
+      margin: 28px auto;
+      padding: 0 18px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 16px #00000012;
+    }
+    label { display: block; margin: 16px 0 7px; font-weight: bold; }
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d6c7b6;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 9px;
+      background: #b91c1c;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #resultado { margin-top: 20px; text-align: center; }
+    footer { text-align: center; padding: 25px; color: #75675b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌮 El Taconazo Club</h1>
+    <p>¡Tus tacos te dan recompensas!</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Consulta tus puntos</h2>
+      <p>Escribe tu teléfono para consultar tu saldo de cliente.</p>
+
+      <form id="consulta">
+        <label for="telefono">Número de teléfono</label>
+        <input id="telefono" type="tel" placeholder="Tu número de teléfono"
+          autocomplete="tel" required>
+        <button type="submit">Consultar mis puntos</button>
+      </form>
+
+      <div id="resultado" role="status">
+        Todavía estamos conectando el sistema de puntos.
+      </div>
+    </section>
+  </main>
+
+  <footer>El Taconazo Club · Gracias por tu preferencia ❤️</footer>
+
+  <script>
+    document.getElementById('consulta').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('resultado').textContent =
+        'El sistema de puntos se conectará en el siguiente paso.';
+    });
+  </script>
+</body>
+</html>
