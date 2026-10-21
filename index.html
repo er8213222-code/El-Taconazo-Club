@@ -1,72 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>El Taconazo Club</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff8ed;
-      color: #292019;
-      text-align: center;
-    }
-    header {
-      background: #7f1d1d;
-      color: white;
-      padding: 30px 15px;
-    }
-    main {
-      max-width: 420px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-    section {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px #00000012;
-    }
-    input, button {
-      box-sizing: border-box;
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      border-radius: 9px;
-      font-size: 16px;
-    }
-    input { border: 1px solid #d6c7b6; }
-    button {
-      background: #b91c1c;
-      color: white;
-      border: 0;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El Taconazo Club</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff8ed;color:#292019}header{background:#7f1d1d;color:white;text-align:center;padding:25px 12px}main{max-width:600px;margin:20px auto;padding:0 14px}section{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 16px #00000012;margin-bottom:16px}input,button,select{width:100%;padding:12px;margin:7px 0;border-radius:9px;font-size:16px}input,select{border:1px solid #d6c7b6}button{background:#b91c1c;color:white;border:0;font-weight:bold;cursor:pointer}button:disabled{opacity:.5}button.secondary{background:#59483a}h2{margin-top:0}.muted{color:#67584c;font-size:14px}.hidden{display:none}.client{border:1px solid #eaded0;padding:13px;border-radius:10px;margin:10px 0;text-align:left}.status{min-height:1.4em;white-space:pre-wrap}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{margin:4px 0}small{display:block;color:#6b5b4b}label{font-weight:bold;font-size:14px}
+</style>
 </head>
 <body>
-  <header>
-    <h1>🌮 El Taconazo Club</h1>
-    <p>¡Tus tacos te dan recompensas!</p>
-  </header>
-  <main>
-    <section>
-      <h2>Consulta tus puntos</h2>
-      <p>Escribe tu teléfono para consultar tu saldo.</p>
-      <form id="consulta">
-        <input id="telefono" type="tel" placeholder="Tu número de teléfono" required>
-        <button type="submit">Consultar mis puntos</button>
-      </form>
-      <p id="resultado">Estamos preparando tu consulta de puntos.</p>
-    </section>
-  </main>
-  <script>
-    document.getElementById('consulta').addEventListener('submit', function(e) {
-      e.preventDefault();
-      document.getElementById('resultado').textContent =
-        'La consulta de puntos aún no está conectada.';
-    });
-  </script>
+<header><h1>🌮 El Taconazo Club</h1><p>¡Tus tacos te dan recompensas!</p></header>
+<main>
+<section id="loginSection"><h2>Acceso del encargado 🔐</h2><form id="loginForm"><input id="email" type="email" placeholder="Correo del administrador" autocomplete="username" required><input id="password" type="password" placeholder="Contraseña" autocomplete="current-password" required><button>Entrar</button></form><p id="loginStatus" class="status"></p></section>
+<div id="panel" class="hidden">
+<section><h2>Panel del encargado</h2><p id="adminEmail" class="muted"></p><button class="secondary" id="logout">Cerrar sesión</button></section>
+<section><h2>Registrar cliente</h2><form id="registerForm"><input id="newName" placeholder="Nombre y apellidos" required minlength="3"><input id="newPhone" placeholder="Teléfono (10 dígitos)" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required><button>Registrar cliente</button></form><p class="muted">Si el nombre o teléfono ya existe, se mostrará un aviso para revisar antes de crear otro registro.</p></section>
+<section><h2>Buscar clientes</h2><input id="search" placeholder="Buscar por nombre o teléfono"><button id="reload" class="secondary">Actualizar lista</button><div id="clientList"></div></section>
+<section id="selectedSection" class="hidden"><h2>Cliente seleccionado</h2><p id="selectedInfo"></p><form id="purchaseForm"><label for="amount">Importe de compra (MXN)</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="Ej. 250" required><button>Registrar compra y sumar puntos</button></form><h3>Canjear premio</h3><select id="reward"></select><button id="redeem">Canjear premio</button><p class="muted">El sistema descuenta puntos al canjear. Los 3 puntos por visita se otorgan una vez por día con compra.</p></section>
+<section><p id="status" class="status" role="status"></p></section>
+</div>
+</main>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import {getFirestore,collection,doc,getDocs,runTransaction,serverTimestamp,query,where} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+const firebaseConfig={apiKey:'AIzaSyBxTxXVlZqTQ3Q8l5j0EeYjUmXAYNMPv48',authDomain:'el-taconazo-club.firebaseapp.com',projectId:'el-taconazo-club',storageBucket:'el-taconazo-club.firebasestorage.app',messagingSenderId:'121359031744',appId:'1:121359031744:web:a1198253c9c8b974f7fc25'};
+const ADMIN_UID='dcsBM3u1olbkooOwUW1UIA02Sip1';
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const rewards=[['1 taco',20],['1 volcán',26],['1 mulita',28],['1 burrito',40],['1 quesadilla',44],['1 torta',50],['1 gringa',50],['1 empalmada',50],['3 tacos',60],['Combo especial: 3 tacos + quesadilla + agua chica',120]];
+rewards.forEach(([name,pts])=>{const opt=document.createElement('option');opt.value=name;opt.textContent=`${name} — ${pts} puntos`;$('reward').append(opt)});
+let clients=[],selected=null;
+const msg=(s)=>{$('status').textContent=s};
+const normalize=s=>String(s||'').trim().toLocaleLowerCase('es-MX').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+const dateKey=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const get=k=>parts.find(x=>x.type===k).value;return `${get('year')}-${get('month')}-${get('day')}`};
+const checkAdmin=()=>{if(auth.currentUser?.uid!==ADMIN_UID)throw new Error('Tu cuenta no tiene permisos de administrador')};
+function showClient(c){selected=c;$('selectedSection').classList.remove('hidden');$('selectedInfo').textContent=`${c.nombre} · ${c.telefono||'Sin teléfono'} · ${c.puntos||0} puntos · ${c.visitas||0} visitas · Nivel ${c.nivel||1}`;$('selectedSection').scrollIntoView({behavior:'smooth',block:'start'})}
+function render(){const term=normalize($('search').value);const list=$('clientList');list.replaceChildren();const matches=clients.filter(c=>normalize(c.nombre).includes(term)||String(c.telefono||'').includes(term));matches.forEach(c=>{const card=document.createElement('div');card.className='client';const title=document.createElement('strong');title.textContent=c.nombre||'Sin nombre';const info=document.createElement('small');info.textContent=`${c.telefono||'Sin teléfono'} · ${c.puntos||0} puntos · ${c.visitas||0} visitas`;const btn=document.createElement('button');btn.textContent='Seleccionar';btn.addEventListener('click',()=>showClient(c));card.append(title,info,btn);list.append(card)});if(!matches.length)list.textContent='No hay clientes que coincidan.'}
+async function load(){checkAdmin();const snap=await getDocs(collection(db,'clientes'));clients=snap.docs.map(d=>({id:d.id,...d.data()}));render();if(selected){const c=clients.find(c=>c.id===selected.id);if(c)showClient(c)}}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginStatus').textContent='Entrando...';try{await signInWithEmailAndPassword(auth,$('email').value,$('password').value);$('password').value=''}catch(err){$('loginStatus').textContent='No se pudo iniciar sesión. Revisa correo y contraseña.'}});
+onAuthStateChanged(auth,async user=>{if(user?.uid===ADMIN_UID){$('loginSection').classList.add('hidden');$('panel').classList.remove('hidden');$('adminEmail').textContent=user.email;try{await load();msg('Panel listo.')}catch(err){msg('No se pudieron cargar clientes: '+err.message)}}else{$('panel').classList.add('hidden');$('loginSection').classList.remove('hidden');if(user){$('loginStatus').textContent='Esta cuenta no es la del administrador.';await signOut(auth)}}});
+$('logout').addEventListener('click',()=>signOut(auth));$('search').addEventListener('input',render);$('reload').addEventListener('click',async()=>{try{await load();msg('Lista actualizada.')}catch(e){msg(e.message)}});
+$('registerForm').addEventListener('submit',async e=>{e.preventDefault();try{checkAdmin();const nombre=$('newName').value.trim().replace(/\s+/g,' '),telefono=$('newPhone').value.trim();if(!/^[0-9]{10}$/.test(telefono))throw new Error('El teléfono debe tener 10 dígitos');await load();const similar=clients.filter(c=>normalize(c.nombre)===normalize(nombre)||String(c.telefono||'')===telefono);if(similar.length){msg('Posible duplicado: '+similar.map(c=>`${c.nombre} (${c.telefono})`).join(', ')+'. Revisa antes de registrar.');return}const id=doc(collection(db,'clientes')).id;await runTransaction(db,async tx=>{tx.set(doc(db,'clientes',id),{nombre,telefono,puntos:0,visitas:0,nivel:1,fechaRegistro:serverTimestamp(),premiosCanjeados:[]})});$('registerForm').reset();await load();msg('Cliente registrado correctamente. ID: '+id)}catch(err){msg('No se pudo registrar: '+err.message)}});
+$('purchaseForm').addEventListener('submit',async e=>{e.preventDefault();try{checkAdmin();if(!selected)throw new Error('Selecciona un cliente');const amount=Number($('amount').value);if(!Number.isFinite(amount)||amount<=0)throw new Error('Importe inválido');const amountCents=Math.round(amount*100);const purchasePoints=Math.floor(amountCents/5000)*2;const key=dateKey();const ref=doc(db,'clientes',selected.id);let earned=0;await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw new Error('Cliente no encontrado');const d=snap.data();const bonus=d.ultimaVisitaPuntos===key?0:3;earned=purchasePoints+bonus;tx.update(ref,{puntos:(d.puntos||0)+earned,visitas:(d.visitas||0)+1,ultimaVisitaPuntos:key,ultimaCompra:serverTimestamp()})});$('purchaseForm').reset();await load();msg(`Compra registrada: +${earned} puntos. Los 3 puntos de visita solo se otorgan una vez al día.`)}catch(err){msg('No se pudo registrar la compra: '+err.message)}});
+$('redeem').addEventListener('click',async()=>{try{checkAdmin();if(!selected)throw new Error('Selecciona un cliente');const name=$('reward').value,entry=rewards.find(r=>r[0]===name);if(!entry)throw new Error('Premio inválido');if(!confirm(`¿Canjear ${name} por ${entry[1]} puntos?`))return;const ref=doc(db,'clientes',selected.id);await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw new Error('Cliente no encontrado');const d=snap.data();if((d.puntos||0)<entry[1])throw new Error('No tiene puntos suficientes');tx.update(ref,{puntos:d.puntos-entry[1],premiosCanjeados:[...(d.premiosCanjeados||[]),{premio:name,puntos:entry[1],fecha:new Date().toISOString()}]})});await load();msg('Premio canjeado: '+name)}catch(err){msg('No se pudo canjear: '+err.message)}});
+</script>
 </body>
 </html>
