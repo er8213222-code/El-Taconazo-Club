@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // REEMPLAZAR por el UID de la cuenta del negocio al hacer la entrega.
+    // Debe coincidir con ADMIN_UID en index.html.
+    function esEncargado() {
+      return request.auth != null
+          && request.auth.uid == 'dcsBM3u1olbkooOwUW1UIA02Sip1';
+    }
+
+    function esCliente(id) {
+      return request.auth != null && request.auth.uid == id;
+    }
+
+    function registroInicialValido(id) {
+      return esCliente(id)
+        && request.resource.data.keys().hasOnly([
+          'nombre', 'correo', 'telefono', 'puntos',
+          'puntosAcumulados', 'visitas', 'nivel',
+          'fechaRegistro', 'premiosCanjeados', 'origen'
+        ])
+        && request.resource.data.keys().hasAll([
+          'nombre', 'correo', 'telefono', 'puntos',
+          'puntosAcumulados', 'visitas', 'nivel',
+          'fechaRegistro', 'premiosCanjeados', 'origen'
+        ])
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() >= 3
+        && request.resource.data.nombre.size() <= 100
+        && request.resource.data.correo == request.auth.token.email
+        && request.resource.data.telefono == ''
+        && request.resource.data.puntos == 0
+        && request.resource.data.puntosAcumulados == 0
+        && request.resource.data.visitas == 0
+        && request.resource.data.nivel == 1
+        && request.resource.data.premiosCanjeados is list
+        && request.resource.data.premiosCanjeados.size() == 0
+        && request.resource.data.origen == 'web'
+        && request.resource.data.fechaRegistro is timestamp;
+    }
+
+    match /clientes/{id} {
+      // Cada cliente solo lee su tarjeta. El negocio puede listar clientes.
+      allow get: if esEncargado() || esCliente(id);
+      allow list: if esEncargado();
+
+      // Clientes nuevos pueden crear una ficha inicial con saldo cero.
+      allow create: if esEncargado() || registroInicialValido(id);
+
+      // Solo el negocio cambia puntos, canjes, fichas y vinculaciones.
+      allow update, delete: if esEncargado();
+    }
+
+    // Todas las demás colecciones permanecen cerradas.
+  }
+}
