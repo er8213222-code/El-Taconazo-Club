@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#211416">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <title>El Taconazo Club | Tu tarjeta digital</title>
 <style>
 :root{color-scheme:dark;--bg:#101114;--ink:#f6eee6;--dark:#161719;--red:#ff8c32;--gold:#ffbb70;--line:#46403c;--muted:#beb3aa;--ok:#79dca2}
@@ -57,6 +58,11 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 .theme-picker .theme-dot[data-theme="default"]{background:linear-gradient(135deg,#242428 48%,#b91c1c 50%);color:#fff}
 #customer .theme-dot[aria-pressed="true"]{outline:3px solid var(--theme-accent);outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){body,header,.panel,.membercard,.stat,.bottom-nav{transition:background-color .25s,border-color .25s}}
+
+/* Identificación de tarjeta por QR; se mantiene blanco solo el cuadrado legible del código */
+.qr-section{margin:18px 0;text-align:center;padding:14px 8px;background:#19191d;border:1px solid var(--line);border-radius:14px}
+.qr-section h3{margin:2px 0 12px}.qr-square{display:flex;align-items:center;justify-content:center;width:max-content;min-width:188px;min-height:188px;max-width:100%;margin:0 auto;padding:10px;background:#fff;color:#222;border-radius:12px;font-size:12px}
+.qr-square img,.qr-square canvas{max-width:100%;height:auto}.qr-fallback{font-size:11px;overflow-wrap:anywhere;color:var(--muted);user-select:all}
 </style>
 </head>
 <body>
@@ -71,6 +77,7 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <div class="customer-tab" id="tabHome">
 <h2>Mi tarjeta digital</h2>
 <div class="membercard"><div class="memberbrand">EL TACONAZO CLUB</div><div class="level" id="cardLevel">NIVEL 1</div><div class="rank" id="cardRank">🌮 Taco Recién Salido</div><div class="membername" id="cardName">Mi tarjeta</div></div>
+<div class="qr-section"><h3>Mi código QR</h3><div class="qr-square" id="cardQR" aria-label="QR de mi tarjeta"></div><p class="muted">Muéstralo al encargado. El QR solo identifica tu tarjeta; nunca autoriza puntos.</p><p class="qr-fallback" id="cardQRText"></p></div>
 <div class="stats"><div class="stat"><strong id="cardPoints">0</strong><span>Puntos disponibles</span></div><div class="stat"><strong id="cardLifetime">0</strong><span>Puntos acumulados</span></div></div>
 <p id="progressText" class="muted"></p><div class="track" role="progressbar" id="progressTrack" aria-label="Progreso al siguiente rango" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress" id="progressBar"></div></div>
 <button class="full" id="customerRefresh" style="margin-top:18px">Actualizar puntos</button><p class="note">Tus rangos usan los puntos acumulados de toda la vida. Canjear premios no reduce tu progreso.</p>
@@ -116,8 +123,8 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <section class="panel hidden" id="staffLogin"><h2>Acceso del encargado</h2><p>Inicia sesión con tu cuenta de administración.</p><form id="staffForm"><label for="staffEmail">Correo del administrador</label><input id="staffEmail" type="email" required autocomplete="username"><label for="staffPassword">Contraseña</label><input id="staffPassword" type="password" required autocomplete="current-password"><button class="full" id="staffSubmit">Entrar como encargado</button></form><p class="status" id="staffStatus"></p><button class="ghost full" data-back>Volver</button></section>
 <div id="admin" class="hidden"><section class="panel"><div class="flexbar"><h2>Panel del encargado</h2><button class="ghost" id="adminLogout">Salir</button></div><p class="muted" id="adminEmail"></p><p class="note">Cada $50 de compra da 2 puntos. La primera compra de cada día da 3 puntos adicionales (hora del centro de México).</p></section>
 <section class="panel"><h2>Registrar cliente sin correo</h2><form id="adminRegisterForm"><label for="newName">Nombre y apellidos</label><input id="newName" minlength="3" required maxlength="100"><label for="newPhone">Teléfono (opcional, 10 dígitos)</label><input id="newPhone" inputmode="numeric" maxlength="10" pattern="[0-9]{10}"><button class="full" id="adminRegisterSubmit">Registrar cliente</button></form></section>
-<section class="panel"><h2>Buscar clientes</h2><input id="search" placeholder="Buscar por nombre, teléfono o correo" aria-label="Buscar clientes"><button class="secondary full" id="refreshClients">Actualizar lista</button><div id="clientList"></div></section>
-<section class="panel hidden" id="selectedPanel"><h2>Cliente seleccionado</h2><p id="selectedInfo"></p><form id="purchaseForm"><label for="amount">Importe de compra (MXN)</label><input id="amount" type="number" min="0.01" max="10000" step="0.01" required placeholder="Ej. 250"><button class="full" id="purchaseSubmit">Registrar compra</button></form><h3>Canjear premio</h3><select id="rewardSelect" aria-label="Seleccionar premio"></select><button class="full secondary" id="redeem">Canjear premio</button><h3>Títulos especiales (opcionales)</h3><select id="specialTitle" aria-label="Título especial"><option value="">Sin título especial</option><option value="rey">👑 Rey del Club</option><option value="taconazo">🌮 El Taconazo</option></select><button class="full ghost" id="saveTitle">Guardar título especial</button>
+<section class="panel"><h2>Buscar clientes</h2><input id="search" placeholder="Buscar por nombre, teléfono o correo" aria-label="Buscar clientes"><p class="muted">También puedes buscar usando el código que aparece debajo del QR del cliente.</p><button class="secondary full" id="refreshClients">Actualizar lista</button><div id="clientList"></div></section>
+<section class="panel hidden" id="selectedPanel"><h2>Cliente seleccionado</h2><p id="selectedInfo"></p><div class="qr-section"><h3>Tarjeta del cliente</h3><div class="qr-square" id="staffQR"></div><p class="qr-fallback" id="staffQRText"></p><p class="muted">Entrega este QR al cliente. Al vincular una ficha presencial, utiliza después el QR de su cuenta digital.</p></div><form id="purchaseForm"><label for="amount">Importe de compra (MXN)</label><input id="amount" type="number" min="0.01" max="10000" step="0.01" required placeholder="Ej. 250"><button class="full" id="purchaseSubmit">Registrar compra</button></form><h3>Canjear premio</h3><select id="rewardSelect" aria-label="Seleccionar premio"></select><button class="full secondary" id="redeem">Canjear premio</button><h3>Títulos especiales (opcionales)</h3><select id="specialTitle" aria-label="Título especial"><option value="">Sin título especial</option><option value="rey">👑 Rey del Club</option><option value="taconazo">🌮 El Taconazo</option></select><button class="full ghost" id="saveTitle">Guardar título especial</button>
 <div id="linkStaffPanel" class="hidden"><h3>Vincular a cuenta digital</h3><p class="muted">Primero verifica en persona la identidad del cliente. Luego ingresa el correo con el que se registró en la web. Se conservarán sus puntos y su rango acumulado.</p><label for="targetEmail">Correo de la nueva cuenta digital</label><input id="targetEmail" type="email" autocomplete="off" placeholder="correo@ejemplo.com"><button id="linkStaffSubmit" class="full">Vincular puntos a esa cuenta</button><p class="status" id="linkStaffStatus" role="status"></p></div>
 <button class="full danger" id="deleteClient">Eliminar cliente de prueba</button></section>
 <section class="panel"><h2>Alertas de inactividad</h2><div id="inactiveList"></div></section><section class="panel"><p class="status" id="adminStatus" role="status"></p></section></div>
@@ -132,6 +139,14 @@ const ADMIN_UID='dcsBM3u1olbkooOwUW1UIA02Sip1';
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 const ranks=[['🌮 Taco Recién Salido',0],['🌶️ Taco Bien Salseado',50],['🔥 Taco con Todo',120],['🌶️ Salsita Brava',220],['⭐ Taquero de Bronce',350],['🥈 Taquero de Plata',500],['🥇 Taquero de Oro',700],['💎 Taquero Diamante',950],['🚀 Maestro del Taco',1250],['🐉 Leyenda Taquera',1600],['⚡ Titán del Taconazo',2100],['🌟 Inmortal del Taco',3000]];
 const prizes=[['1 taco',20],['1 volcán',26],['1 mulita',28],['1 burrito',40],['1 quesadilla',44],['1 torta',50],['1 gringa',50],['1 empalmada',50],['3 tacos',60],['Combo: 3 tacos + quesadilla + agua chica',120]];
+function renderCardQR(id,qrId='cardQR',textId='cardQRText'){
+const container=$(qrId),fallback=$(textId);container.replaceChildren();
+if(!id){fallback.textContent='Código no disponible';return}
+const token='TACONAZO:'+id;
+fallback.textContent='Código: '+token;
+if(typeof QRCode!=='function'){container.textContent='Código QR no disponible sin conexión. Usa el código escrito.';return}
+try{new QRCode(container,{text:token,width:168,height:168,colorDark:'#171717',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){container.textContent='No se pudo mostrar el QR. Usa el código escrito.'}
+}
 const safePoints=n=>Number.isSafeInteger(n)&&n>=0;
 const pts=d=>safePoints(d.puntos)?d.puntos:0;
 const lifetime=d=>safePoints(d.puntosAcumulados)?d.puntosAcumulados:pts(d);
@@ -184,7 +199,7 @@ $('signupForm').addEventListener('submit',async e=>{e.preventDefault();if(regist
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();lock('loginSubmit',true);setStatus('loginStatus','Entrando...');try{await signInWithEmailAndPassword(auth,$('loginEmail').value.trim(),$('loginPassword').value);$('loginPassword').value=''}catch(err){setStatus('loginStatus',reportError(err))}finally{lock('loginSubmit',false)}});
 $('staffForm').addEventListener('submit',async e=>{e.preventDefault();lock('staffSubmit',true);setStatus('staffStatus','Entrando...');try{const result=await signInWithEmailAndPassword(auth,$('staffEmail').value.trim(),$('staffPassword').value);$('staffPassword').value='';if(result.user.uid!==ADMIN_UID){await signOut(auth);throw Error('Esta cuenta no es de administrador.')}}catch(err){setStatus('staffStatus',reportError(err))}finally{lock('staffSubmit',false)}});
 $('resetPassword').onclick=async()=>{const email=$('loginEmail').value.trim();if(!email){setStatus('loginStatus','Primero escribe tu correo.');return}try{await sendPasswordResetEmail(auth,email);setStatus('loginStatus','Si existe la cuenta, recibirás un correo para cambiar la contraseña.',true)}catch(err){setStatus('loginStatus',reportError(err))}};
-function renderCard(d){const total=lifetime(d),i=rankIndex(total),next=ranks[i+1];
+function renderCard(d){const total=lifetime(d),i=rankIndex(total),next=ranks[i+1];renderCardQR(auth.currentUser?.uid);
 $('profileName').textContent=String(d.nombre||'Sin nombre');
 $('profileEmail').textContent=String(d.correo||auth.currentUser?.email||'Sin correo');
 $('profilePhone').textContent=String(d.telefono||'No registrado');
@@ -198,11 +213,11 @@ const rewardList=$('rewardsList');prizes.forEach(([name,p])=>{const row=document
 onAuthStateChanged(auth,async user=>{if(!user){showGuest();clients=[];selectedId=null;return}if(user.uid===ADMIN_UID){showAdmin();$('adminEmail').textContent='Sesión: '+(user.email||'Administrador');try{await loadClients();setStatus('adminStatus','Panel listo.',true)}catch(err){setStatus('adminStatus',reportError(err))}}else await openCustomer(user)});
 function checkAdmin(){if(auth.currentUser?.uid!==ADMIN_UID)throw Error('Acceso solo para administrador.');}
 function clientCard(c){const div=document.createElement('div');div.className='client';const title=document.createElement('strong');title.textContent=displayName(c);const info=document.createElement('small');info.textContent=`${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${ranks[rankIndex(lifetime(c))][0]}`;const btn=document.createElement('button');btn.textContent='Seleccionar';btn.onclick=()=>selectClient(c.id);div.append(title,info,btn);return div}
-function renderClients(){const filter=normalize($('search').value),list=$('clientList');list.replaceChildren();const matches=clients.filter(c=>!c.vinculadoA&&(normalize(c.nombre).includes(filter)||normalize(c.correo).includes(filter)||String(c.telefono||'').includes(filter)));if(!matches.length){list.textContent='No hay clientes que coincidan.';return}matches.forEach(c=>list.append(clientCard(c)))}
+function renderClients(){const filter=normalize($('search').value),list=$('clientList');list.replaceChildren();const matches=clients.filter(c=>!c.vinculadoA&&(normalize(c.nombre).includes(filter)||normalize(c.correo).includes(filter)||String(c.telefono||'').includes(filter)||c.id.toLowerCase().includes(filter.replace(/^taconazo:/i,''))));if(!matches.length){list.textContent='No hay clientes que coincidan.';return}matches.forEach(c=>list.append(clientCard(c)))}
 const ageDays=ts=>ts?.toDate?Math.max(0,Math.floor((Date.now()-ts.toDate().getTime())/86400000)):null;
 function renderInactive(){const el=$('inactiveList');el.replaceChildren();const matches=clients.map(c=>({...c,dias:ageDays(c.ultimaCompra)})).filter(c=>c.dias!==null&&c.dias>=21).sort((a,b)=>b.dias-a.dias);if(!matches.length){el.textContent='Sin alertas: ningún cliente con compras registradas supera 21 días de inactividad.';return}for(const c of matches){const p=document.createElement('p');p.textContent=`${c.dias>=30?'⚠️':'⏳'} ${displayName(c)} — ${c.dias} días sin comprar`;el.append(p)}}
 async function loadClients(){checkAdmin();const snap=await getDocs(collection(db,'clientes'));clients=snap.docs.map(d=>({id:d.id,...d.data()}));renderClients();renderInactive();if(selectedId){const c=clients.find(c=>c.id===selectedId);if(c)fillSelected(c);else{selectedId=null;toggle('selectedPanel',false)}}}
-function fillSelected(c){toggle('selectedPanel',true);toggle('linkStaffPanel',c.origen==='personal'&&!c.vinculadoA);$('targetEmail').value='';setStatus('linkStaffStatus','');$('specialTitle').value=c.tituloEspecial||'';$('selectedInfo').textContent=`${displayName(c)} · ${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${formattedPoints(lifetime(c))} acumulados · ${c.visitas||0} visitas · ${ranks[rankIndex(lifetime(c))][0]}`}
+function fillSelected(c){toggle('selectedPanel',true);renderCardQR(c.id,'staffQR','staffQRText');toggle('linkStaffPanel',c.origen==='personal'&&!c.vinculadoA);$('targetEmail').value='';setStatus('linkStaffStatus','');$('specialTitle').value=c.tituloEspecial||'';$('selectedInfo').textContent=`${displayName(c)} · ${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${formattedPoints(lifetime(c))} acumulados · ${c.visitas||0} visitas · ${ranks[rankIndex(lifetime(c))][0]}`}
 function selectClient(id){selectedId=id;const c=clients.find(c=>c.id===id);if(c){fillSelected(c);$('selectedPanel').scrollIntoView({behavior:'smooth',block:'start'})}}
 let linkBusy=false;
 $('linkStaffSubmit').onclick=async()=>{
