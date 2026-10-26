@@ -37,6 +37,26 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 #tabPrizes .reward{padding:14px 2px}
 @media(min-width:650px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:650px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:16px 16px 0 0}}
 
+
+/* Paletas completas: negro combinado con el color elegido */
+:root{--theme-accent:#b91c1c;--theme-glow:#591d27;--theme-soft:#321b20;--theme-text:#ffffff}
+body{background:radial-gradient(ellipse 105% 48% at 50% -12%,var(--theme-glow) 0%,#101114 75%) fixed;min-height:100vh}
+html{background:#101114}
+header{background:linear-gradient(155deg,#101114 22%,var(--theme-soft));border-bottom-color:var(--theme-accent)}
+.panel{background:linear-gradient(155deg,#1d1e22 68%,var(--theme-soft));border-color:color-mix(in srgb,var(--theme-accent) 18%,#353439)}
+#customer .membercard{background:linear-gradient(145deg,#151316 0%,var(--theme-soft) 38%,var(--theme-glow) 78%,var(--theme-accent) 160%);border-color:var(--theme-accent);box-shadow:0 12px 30px #0009,inset 0 0 30px #0002}
+#customer .stat{background:linear-gradient(160deg,#2b2625,var(--theme-soft));border:1px solid color-mix(in srgb,var(--theme-accent) 25%,#302c2d)}
+#customer .stat strong{color:var(--theme-accent);filter:brightness(1.4)}
+#customer .note{background:linear-gradient(110deg,#302923,var(--theme-soft))}
+#customer .progress{background:var(--theme-accent)}
+#customer button:not(.secondary):not(.ghost):not(.danger):not(.theme-dot):not([data-tab]){background:var(--theme-accent);color:var(--theme-text)}
+button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not([data-tab]){background:var(--theme-accent);color:var(--theme-text)}
+#customer .bottom-nav{background:linear-gradient(145deg,#17181b,var(--theme-soft));border-top-color:color-mix(in srgb,var(--theme-accent) 42%,#383239)}
+#customer .bottom-nav button.nav-active{color:var(--theme-accent);background:var(--theme-soft);box-shadow:inset 0 2px 0 var(--theme-accent)}
+#customer .badge-item.unlocked{background:linear-gradient(145deg,#262025,var(--theme-soft));border-color:var(--theme-accent)}
+.theme-picker .theme-dot[data-theme="default"]{background:linear-gradient(135deg,#242428 48%,#b91c1c 50%);color:#fff}
+#customer .theme-dot[aria-pressed="true"]{outline:3px solid var(--theme-accent);outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){body,header,.panel,.membercard,.stat,.bottom-nav{transition:background-color .25s,border-color .25s}}
 </style>
 </head>
 <body>
@@ -62,8 +82,9 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <h3>Settings · Seguridad</h3><p class="muted">Por seguridad, ninguna página puede mostrar tu contraseña actual. Para cambiarla, te enviamos un enlace a tu correo.</p>
 <button class="full secondary" id="profileResetPassword">Enviar enlace para cambiar contraseña</button>
 <p id="profileStatus" class="status" role="status"></p>
-<h3>Personalizar color</h3><p class="muted">Elige el acento del Club. La tarjeta roja conserva su identidad.</p>
+<h3>Personalizar color</h3><p class="muted">Personaliza el fondo, la tarjeta y los detalles. Predeterminado recupera el diseño original.</p>
 <div class="theme-picker" id="themePicker" aria-label="Colores disponibles">
+<button type="button" class="theme-dot" data-theme="default" style="--swatch:linear-gradient(135deg,#1b1d21,#b91c1c)" aria-label="Predeterminado">Original</button>
 <button type="button" class="theme-dot" data-theme="red" style="--swatch:#b91c1c" aria-label="Rojo">Rojo</button>
 <button type="button" class="theme-dot" data-theme="orange" style="--swatch:#ff8c32" aria-label="Naranja">Naranja</button>
 <button type="button" class="theme-dot" data-theme="pink" style="--swatch:#ed6e9e" aria-label="Rosa">Rosa</button>
@@ -112,8 +133,26 @@ const safePoints=n=>Number.isSafeInteger(n)&&n>=0;
 const pts=d=>safePoints(d.puntos)?d.puntos:0;
 const lifetime=d=>safePoints(d.puntosAcumulados)?d.puntosAcumulados:pts(d);
 const rankIndex=p=>{let i=0;for(let j=0;j<ranks.length;j++)if(p>=ranks[j][1])i=j;return i};
-const themes={red:'#b91c1c',orange:'#ff8c32',pink:'#ed6e9e',blue:'#559fec',green:'#50bd8a'};
-function selectTheme(name){if(!Object.prototype.hasOwnProperty.call(themes,name))name='red';document.documentElement.style.setProperty('--button-accent',themes[name]);document.querySelectorAll('[data-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===name)));try{localStorage.setItem('taconazo-theme',name)}catch(e){}}
+const themes={
+default:{accent:'#b91c1c',glow:'#591d27',soft:'#321b20',text:'#ffffff'},
+red:{accent:'#e13f4c',glow:'#762028',soft:'#3a2027',text:'#ffffff'},
+orange:{accent:'#ff9c42',glow:'#794019',soft:'#382718',text:'#251507'},
+pink:{accent:'#f278b6',glow:'#773257',soft:'#3d2236',text:'#25111b'},
+blue:{accent:'#64aafd',glow:'#264f80',soft:'#1b3048',text:'#101b2c'},
+green:{accent:'#60d49a',glow:'#246447',soft:'#1a362d',text:'#0c2119'}
+};
+function selectTheme(name){
+if(!Object.prototype.hasOwnProperty.call(themes,name))name='default';
+const theme=themes[name],root=document.documentElement;
+root.style.setProperty('--button-accent',theme.accent);
+root.style.setProperty('--theme-accent',theme.accent);
+root.style.setProperty('--theme-glow',theme.glow);
+root.style.setProperty('--theme-soft',theme.soft);
+root.style.setProperty('--theme-text',theme.text);
+root.dataset.clubTheme=name;
+document.querySelectorAll('[data-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===name)));
+try{localStorage.setItem('taconazo-theme',name)}catch(e){}
+}
 function showTab(which){const tabs=['Home','Account','Badges','Prizes'];if(!tabs.includes(which))which='Home';tabs.forEach(t=>toggle('tab'+t,t===which));document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===which;b.classList.toggle('nav-active',active);b.setAttribute('aria-current',active?'page':'false')});window.scrollTo({top:0,behavior:'instant'})}
 function renderBadges(total){const grid=$('badgeGrid');grid.replaceChildren();ranks.forEach(([name,threshold],idx)=>{const unlocked=total>=threshold,next=ranks[idx+1]?.[1];const box=document.createElement('div');box.className='badge-item'+(unlocked?' unlocked':' locked');const shield=document.createElement('div');shield.className='badge-shield';shield.textContent=unlocked?'🛡️':'⬡';const title=document.createElement('strong');title.textContent=name;const hint=document.createElement('small');hint.textContent=unlocked?'✓ Desbloqueada':('Faltan '+formattedPoints(threshold-total)+' pts · '+formattedPoints(total)+' / '+formattedPoints(threshold));box.append(shield,title,hint);grid.append(box)});const i=rankIndex(total),next=ranks[i+1],levelMin=ranks[i][1];const value=next?Math.max(0,Math.min(100,Math.round((total-levelMin)*100/(next[1]-levelMin)))):100;$('badgeSummary').textContent=(i+1)+' de '+ranks.length+' rangos desbloqueados · '+formattedPoints(total)+' puntos acumulados';$('badgeProgressBar').style.width=value+'%';$('badgeProgressTrack').setAttribute('aria-valuenow',String(value));$('badgeProgressText').textContent=next?('Faltan '+formattedPoints(next[1]-total)+' puntos para '+next[0]):'¡Completaste los 12 rangos!'}
 
@@ -136,7 +175,7 @@ $('goSignup').onclick=()=>showGuest('signup');$('goLogin').onclick=()=>showGuest
 $('customerLogout').onclick=$('adminLogout').onclick=()=>signOut(auth);
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>selectTheme(b.dataset.theme));
-try{selectTheme(localStorage.getItem('taconazo-theme')||'red')}catch(e){selectTheme('red')}
+try{selectTheme(localStorage.getItem('taconazo-theme')||'default')}catch(e){selectTheme('default')}
 $('profileResetPassword').onclick=async()=>{const email=auth.currentUser?.email;if(!email){setStatus('profileStatus','Esta cuenta no tiene correo vinculado. Consulta al encargado.');return}lock('profileResetPassword',true);setStatus('profileStatus','Enviando enlace...');try{await sendPasswordResetEmail(auth,email);setStatus('profileStatus','Si existe tu cuenta, revisa tu correo para cambiar la contraseña.',true)}catch(e){setStatus('profileStatus',reportError(e))}finally{lock('profileResetPassword',false)}};
 $('signupForm').addEventListener('submit',async e=>{e.preventDefault();if(registerBusy)return;registerBusy=true;lock('signupSubmit',true);setStatus('signupStatus','Creando tu cuenta...');try{const nombre=$('signupName').value.trim().replace(/\s+/g,' '),correo=$('signupEmail').value.trim();if(nombre.length<3)throw Error('Escribe nombre y apellidos.');const userCred=await createUserWithEmailAndPassword(auth,correo,$('signupPassword').value);await setDoc(doc(db,'clientes',userCred.user.uid),{nombre,correo:userCred.user.email,telefono:'',puntos:0,puntosAcumulados:0,visitas:0,nivel:1,fechaRegistro:serverTimestamp(),premiosCanjeados:[],origen:'web'});$('signupForm').reset();setStatus('signupStatus','Cuenta creada.',true);await openCustomer(userCred.user)}catch(err){setStatus('signupStatus','No se completó el registro: '+reportError(err)+'. Si se creó tu correo, entra con «Ya tengo cuenta»; no abras otra cuenta.')}finally{registerBusy=false;lock('signupSubmit',false)}});
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();lock('loginSubmit',true);setStatus('loginStatus','Entrando...');try{await signInWithEmailAndPassword(auth,$('loginEmail').value.trim(),$('loginPassword').value);$('loginPassword').value=''}catch(err){setStatus('loginStatus',reportError(err))}finally{lock('loginSubmit',false)}});
