@@ -8,6 +8,35 @@
 <style>
 :root{color-scheme:dark;--bg:#101114;--ink:#f6eee6;--dark:#161719;--red:#ff8c32;--gold:#ffbb70;--line:#46403c;--muted:#beb3aa;--ok:#79dca2}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}header{padding:28px 18px;background:var(--dark);color:white;text-align:center;border-bottom:4px solid var(--red)}header h1{margin:0;color:var(--gold);font-weight:900;letter-spacing:.05em}header p{margin:5px 0 0;color:#eee3dc}main{max-width:650px;margin:18px auto 55px;padding:0 14px}.panel{background:#1d1e22;border:1px solid var(--line);box-shadow:0 6px 24px #2c0f0f0a;border-radius:17px;padding:20px;margin:16px 0}h2{margin:0 0 10px;font-size:22px}h3{margin:22px 0 10px;font-size:17px}p{margin:9px 0}.muted{font-size:14px;color:var(--muted)}.hidden{display:none!important}label{display:block;font-weight:650;font-size:14px;margin-top:13px}input:not([type=checkbox]),select{display:block;width:100%;padding:13px;border:1px solid #62534a;border-radius:10px;margin:7px 0 12px;font:inherit;background:#1d1e22;color:var(--ink)}input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #dfb677;outline-offset:2px}.checkrow{display:flex;align-items:flex-start;gap:10px;margin:14px 0;font-size:14px}.checkrow input{margin-top:5px}button{border:0;background:#b91c1c;color:#ffffff;font:700 15px/1.2 system-ui,sans-serif;padding:13px 16px;border-radius:10px;cursor:pointer;min-height:44px}button:disabled{opacity:.55;cursor:wait}.secondary{background:#393a3f;color:var(--ink)}.ghost{background:#32271f;color:var(--gold)}.danger{background:#80343a;color:#fff2f2}.full{width:100%;margin:6px 0}.twobtn{display:grid;grid-template-columns:1fr 1fr;gap:9px}.note{background:#34291e;padding:12px;border-radius:10px;font-size:14px}.status{min-height:20px;white-space:pre-wrap;color:#ffa0a0;font-size:14px}.success{color:var(--ok)}.membercard{padding:22px;color:white;background:linear-gradient(135deg,#161616,#38271a 76%,#6b3818);border:1px solid #b17c48;border-radius:17px;box-shadow:0 10px 25px #0002;min-height:224px}.memberbrand{font-size:18px;color:var(--gold);font-weight:900;letter-spacing:.06em}.level{font-size:12px;color:#e7cda9;letter-spacing:2px;margin-top:23px}.rank{font-size:25px;line-height:1.1;font-weight:900;margin:8px 0 24px}.membername{border-top:1px solid #ffffff55;padding-top:12px;font-size:16px;font-weight:700;overflow-wrap:anywhere}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.stat{border-radius:12px;background:#2d2722;text-align:center;padding:12px 6px}.stat strong{display:block;color:#ffbb70;font-size:25px}.stat span{font-size:12px}.track{height:12px;background:#4a3c32;border-radius:18px;overflow:hidden}.progress{height:100%;width:0;background:var(--red);transition:width .25s}.client{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}.client strong{display:block}.client small{display:block;color:var(--muted);margin:4px 0 8px}.client button{padding:10px}.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{background:#3e2d20;border-radius:100px;padding:5px 10px;font-size:13px;font-weight:700}.staff{position:fixed;right:10px;bottom:10px;width:34px;height:34px;min-height:34px;border-radius:100%;background:#393a3f;color:white;font-size:12px;opacity:.6;padding:0}.flexbar{display:flex;gap:8px;justify-content:space-between;align-items:center}.flexbar button{flex:none}.reward{padding:9px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}.reward span:last-child{white-space:nowrap;font-weight:700}.hiddenitem{display:none}footer{text-align:center;color:var(--muted);font-size:12px;margin:20px 0 35px}@media(max-width:370px){.twobtn{grid-template-columns:1fr}.panel{padding:16px}.rank{font-size:22px}}
+
+/* App Club: tarjeta roja, cuatro pestañas y escudos de rangos */
+:root{--button-accent:#b91c1c}
+body:has(#customer:not(.hidden)) main{padding-bottom:93px}
+#customer{padding:18px}
+#customer .customer-tab{min-height:280px}
+#customer .membercard{background:linear-gradient(145deg,#170f12 0%,#49191f 62%,#a5232d 100%);border-color:#bd5b5d;box-shadow:0 12px 28px #0009}
+button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(.nav-active)[data-tab=""]{background:var(--button-accent)}
+#customer button:not(.secondary):not(.ghost):not(.danger):not(.theme-dot):not([data-tab]){background:var(--button-accent);color:#fff}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:9px max(8px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom));background:#18191c;border-top:1px solid #484044;box-shadow:0 -8px 24px #0008}
+.bottom-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:10px;color:#bdb7b2;background:transparent;min-width:0;min-height:54px;padding:6px 2px}
+.bottom-nav button span{font-size:21px;line-height:1.15}.bottom-nav button small{font-size:11px;font-weight:700}
+.bottom-nav button.nav-active{color:#ffcece;background:#42252a;box-shadow:inset 0 2px 0 #d84b51}
+#tabAccount .account-field{padding:13px 4px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:3px;overflow-wrap:anywhere}
+.account-field span{color:var(--muted);font-size:13px}.account-field strong{font-size:16px}
+.theme-picker{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+.theme-picker .theme-dot{background:var(--swatch);color:white;padding:12px 7px;min-width:76px;flex:1;font-size:12px;text-shadow:0 1px 3px #000c;border:2px solid transparent}
+.theme-dot[aria-pressed="true"]{outline:2px solid #f3ece6;outline-offset:2px}
+.badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:16px 0 22px}
+.badge-item{min-width:0;text-align:center;border:1px solid #554443;border-radius:14px;padding:13px 8px;background:#252125;display:flex;flex-direction:column;gap:7px;align-items:center}
+.badge-item .badge-shield{font-size:42px;line-height:1.1;filter:drop-shadow(0 3px 5px #0008)}
+.badge-item strong{font-size:13px;line-height:1.25;overflow-wrap:anywhere}.badge-item small{font-size:11px;line-height:1.3;color:var(--muted)}
+.badge-item.locked{background:#1b1b1e;border-color:#343235;color:#9b9598}
+.badge-item.locked .badge-shield{color:#555158;filter:grayscale(1);opacity:.45}
+.badge-item.unlocked{border-color:#ae6060;background:linear-gradient(145deg,#322022,#44272c)}
+.badge-item.unlocked small{color:#b5e4b7}
+#tabPrizes .reward{padding:14px 2px}
+@media(min-width:650px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:650px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:16px 16px 0 0}}
+
 </style>
 </head>
 <body>
@@ -16,7 +45,51 @@
 <section class="panel" id="welcome"><h2>Bienvenido al Club</h2><p>Regístrate para consultar tus puntos, descubrir tu rango y canjear premios.</p><div class="twobtn"><button id="goSignup">Registrarme</button><button class="secondary" id="goLogin">Ya tengo cuenta</button></div><p class="muted">¿No tienes correo? El personal puede registrar tus compras a tu nombre.</p></section>
 <section class="panel hidden" id="signup"><h2>Crear cuenta</h2><form id="signupForm"><label for="signupName">Nombre y apellidos</label><input id="signupName" required maxlength="100" minlength="3" autocomplete="name"><label for="signupEmail">Correo electrónico</label><input id="signupEmail" type="email" required autocomplete="email"><label for="signupPassword">Contraseña (mínimo 6 caracteres)</label><input id="signupPassword" type="password" required minlength="6" autocomplete="new-password"><div class="checkrow"><input id="consent" type="checkbox" required><span>Autorizo guardar mis datos para administrar mis puntos y recompensas.</span></div><button class="full" id="signupSubmit">Crear mi cuenta</button></form><p id="signupStatus" class="status" role="status"></p><button class="ghost full" data-back>Volver</button></section>
 <section class="panel hidden" id="login"><h2>Entrar al Club</h2><form id="loginForm"><label for="loginEmail">Correo</label><input id="loginEmail" type="email" required autocomplete="username"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" required autocomplete="current-password"><button class="full" id="loginSubmit">Entrar</button></form><p id="loginStatus" class="status" role="status"></p><button id="resetPassword" class="ghost full">Olvidé mi contraseña</button><button class="ghost full" data-back>Volver</button></section>
-<section class="panel hidden" id="customer"><div class="flexbar"><h2>Mi tarjeta digital</h2><button class="ghost" id="customerLogout">Salir</button></div><p id="customerStatus" class="status" role="status"></p><div class="membercard"><div class="memberbrand">EL TACONAZO CLUB</div><div class="level" id="cardLevel">NIVEL 1</div><div class="rank" id="cardRank">🌮 Taco Recién Salido</div><div class="membername" id="cardName">Mi tarjeta</div></div><div class="stats"><div class="stat"><strong id="cardPoints">0</strong><span>Puntos disponibles</span></div><div class="stat"><strong id="cardLifetime">0</strong><span>Puntos acumulados</span></div></div><p id="progressText" class="muted"></p><div class="track" role="progressbar" id="progressTrack" aria-label="Progreso al siguiente rango" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress" id="progressBar"></div></div><div class="twobtn" style="margin-top:16px"><button id="customerRefresh">Actualizar puntos</button><button class="secondary" id="showRewards">Ver premios</button></div><div id="rewardsBlock" class="hidden"><h3>Premios para canjear</h3><div id="rewardsList"></div></div><p class="note">El encargado registra tu compra. Los puntos acumulados determinan tu rango, aunque uses puntos para canjear.</p></section>
+<section class="panel hidden" id="customer">
+<p id="customerStatus" class="status" role="status"></p>
+<div class="customer-tab" id="tabHome">
+<h2>Mi tarjeta digital</h2>
+<div class="membercard"><div class="memberbrand">EL TACONAZO CLUB</div><div class="level" id="cardLevel">NIVEL 1</div><div class="rank" id="cardRank">🌮 Taco Recién Salido</div><div class="membername" id="cardName">Mi tarjeta</div></div>
+<div class="stats"><div class="stat"><strong id="cardPoints">0</strong><span>Puntos disponibles</span></div><div class="stat"><strong id="cardLifetime">0</strong><span>Puntos acumulados</span></div></div>
+<p id="progressText" class="muted"></p><div class="track" role="progressbar" id="progressTrack" aria-label="Progreso al siguiente rango" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress" id="progressBar"></div></div>
+<button class="full" id="customerRefresh" style="margin-top:18px">Actualizar puntos</button><p class="note">Tus rangos usan los puntos acumulados de toda la vida. Canjear premios no reduce tu progreso.</p>
+</div>
+<div class="customer-tab hidden" id="tabAccount">
+<h2>Profile · Mi cuenta</h2><p class="muted">Tus datos y preferencias del Club.</p>
+<div class="account-field"><span>Nombre</span><strong id="profileName">—</strong></div>
+<div class="account-field"><span>Correo electrónico</span><strong id="profileEmail">—</strong></div>
+<div class="account-field"><span>Teléfono</span><strong id="profilePhone">—</strong></div>
+<h3>Settings · Seguridad</h3><p class="muted">Por seguridad, ninguna página puede mostrar tu contraseña actual. Para cambiarla, te enviamos un enlace a tu correo.</p>
+<button class="full secondary" id="profileResetPassword">Enviar enlace para cambiar contraseña</button>
+<p id="profileStatus" class="status" role="status"></p>
+<h3>Personalizar color</h3><p class="muted">Elige el acento del Club. La tarjeta roja conserva su identidad.</p>
+<div class="theme-picker" id="themePicker" aria-label="Colores disponibles">
+<button type="button" class="theme-dot" data-theme="red" style="--swatch:#b91c1c" aria-label="Rojo">Rojo</button>
+<button type="button" class="theme-dot" data-theme="orange" style="--swatch:#ff8c32" aria-label="Naranja">Naranja</button>
+<button type="button" class="theme-dot" data-theme="pink" style="--swatch:#ed6e9e" aria-label="Rosa">Rosa</button>
+<button type="button" class="theme-dot" data-theme="blue" style="--swatch:#559fec" aria-label="Azul">Azul</button>
+<button type="button" class="theme-dot" data-theme="green" style="--swatch:#50bd8a" aria-label="Verde">Verde</button>
+</div>
+<h3>Sesión</h3><button class="full danger" id="customerLogout">Cerrar sesión</button>
+</div>
+<div class="customer-tab hidden" id="tabBadges">
+<h2>Insignias · Mis rangos</h2>
+<p class="muted">Cada escudo se desbloquea con puntos acumulados, aunque canjees recompensas.</p>
+<div class="badge-grid" id="badgeGrid"></div>
+<p id="badgeSummary" class="note"></p>
+<div class="track" role="progressbar" id="badgeProgressTrack" aria-label="Progreso del rango actual" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="badgeProgressBar" class="progress"></div></div><p id="badgeProgressText" class="muted"></p>
+</div>
+<div class="customer-tab hidden" id="tabPrizes">
+<h2>Premios · Rewards</h2><p class="muted">Consulta cuánto cuesta cada premio. El encargado hace los canjes en la taquería.</p>
+<p class="note">Puntos disponibles: <strong id="rewardsBalance">0</strong></p><div id="rewardsList"></div>
+</div>
+<nav class="bottom-nav" id="customerNav" aria-label="Navegación de la cuenta">
+<button type="button" data-tab="Home" class="nav-active"><span>⌂</span><small>Principal</small></button>
+<button type="button" data-tab="Account"><span>♙</span><small>Cuenta</small></button>
+<button type="button" data-tab="Badges"><span>⬡</span><small>Insignias</small></button>
+<button type="button" data-tab="Prizes"><span>🎁</span><small>Premios</small></button>
+</nav>
+</section>
 <button class="staff" id="staffAccess" aria-label="Acceso del encargado" title="Acceso del encargado">⚙</button>
 <section class="panel hidden" id="staffLogin"><h2>Acceso del encargado</h2><p>Inicia sesión con tu cuenta de administración.</p><form id="staffForm"><label for="staffEmail">Correo del administrador</label><input id="staffEmail" type="email" required autocomplete="username"><label for="staffPassword">Contraseña</label><input id="staffPassword" type="password" required autocomplete="current-password"><button class="full" id="staffSubmit">Entrar como encargado</button></form><p class="status" id="staffStatus"></p><button class="ghost full" data-back>Volver</button></section>
 <div id="admin" class="hidden"><section class="panel"><div class="flexbar"><h2>Panel del encargado</h2><button class="ghost" id="adminLogout">Salir</button></div><p class="muted" id="adminEmail"></p><p class="note">Cada $50 de compra da 2 puntos. La primera compra de cada día da 3 puntos adicionales (hora del centro de México).</p></section>
@@ -39,6 +112,11 @@ const safePoints=n=>Number.isSafeInteger(n)&&n>=0;
 const pts=d=>safePoints(d.puntos)?d.puntos:0;
 const lifetime=d=>safePoints(d.puntosAcumulados)?d.puntosAcumulados:pts(d);
 const rankIndex=p=>{let i=0;for(let j=0;j<ranks.length;j++)if(p>=ranks[j][1])i=j;return i};
+const themes={red:'#b91c1c',orange:'#ff8c32',pink:'#ed6e9e',blue:'#559fec',green:'#50bd8a'};
+function selectTheme(name){if(!Object.prototype.hasOwnProperty.call(themes,name))name='red';document.documentElement.style.setProperty('--button-accent',themes[name]);document.querySelectorAll('[data-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.theme===name)));try{localStorage.setItem('taconazo-theme',name)}catch(e){}}
+function showTab(which){const tabs=['Home','Account','Badges','Prizes'];if(!tabs.includes(which))which='Home';tabs.forEach(t=>toggle('tab'+t,t===which));document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===which;b.classList.toggle('nav-active',active);b.setAttribute('aria-current',active?'page':'false')});window.scrollTo({top:0,behavior:'instant'})}
+function renderBadges(total){const grid=$('badgeGrid');grid.replaceChildren();ranks.forEach(([name,threshold],idx)=>{const unlocked=total>=threshold,next=ranks[idx+1]?.[1];const box=document.createElement('div');box.className='badge-item'+(unlocked?' unlocked':' locked');const shield=document.createElement('div');shield.className='badge-shield';shield.textContent=unlocked?'🛡️':'⬡';const title=document.createElement('strong');title.textContent=name;const hint=document.createElement('small');hint.textContent=unlocked?'✓ Desbloqueada':('Faltan '+formattedPoints(threshold-total)+' pts · '+formattedPoints(total)+' / '+formattedPoints(threshold));box.append(shield,title,hint);grid.append(box)});const i=rankIndex(total),next=ranks[i+1],levelMin=ranks[i][1];const value=next?Math.max(0,Math.min(100,Math.round((total-levelMin)*100/(next[1]-levelMin)))):100;$('badgeSummary').textContent=(i+1)+' de '+ranks.length+' rangos desbloqueados · '+formattedPoints(total)+' puntos acumulados';$('badgeProgressBar').style.width=value+'%';$('badgeProgressTrack').setAttribute('aria-valuenow',String(value));$('badgeProgressText').textContent=next?('Faltan '+formattedPoints(next[1]-total)+' puntos para '+next[0]):'¡Completaste los 12 rangos!'}
+
 const normalize=s=>String(s||'').trim().toLocaleLowerCase('es-MX').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
 const money=n=>Number(n).toLocaleString('es-MX',{style:'currency',currency:'MXN'});
 const formattedPoints=n=>n.toLocaleString('es-MX');
@@ -51,19 +129,29 @@ const toggle=(id,show)=>$(id).classList.toggle('hidden',!show);
 const guestPanels=['welcome','signup','login','staffLogin'];
 function showGuest(id='welcome'){guestPanels.forEach(n=>toggle(n,n===id));toggle('customer',false);toggle('admin',false);toggle('staffAccess',true)}
 function showAdmin(){guestPanels.forEach(n=>toggle(n,false));toggle('customer',false);toggle('admin',true);toggle('staffAccess',false)}
-function showCustomerShell(){guestPanels.forEach(n=>toggle(n,false));toggle('admin',false);toggle('customer',true);toggle('staffAccess',false)}
+function showCustomerShell(){guestPanels.forEach(n=>toggle(n,false));toggle('admin',false);toggle('customer',true);toggle('staffAccess',false);showTab('Home')}
 const lock=(id,busy)=>$(id).disabled=busy;
 let registerBusy=false,adminRegisterBusy=false,purchaseBusy=false,redeemBusy=false,clients=[],selectedId=null;
 $('goSignup').onclick=()=>showGuest('signup');$('goLogin').onclick=()=>showGuest('login');$('staffAccess').onclick=()=>showGuest('staffLogin');document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>showGuest());
 $('customerLogout').onclick=$('adminLogout').onclick=()=>signOut(auth);
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>selectTheme(b.dataset.theme));
+try{selectTheme(localStorage.getItem('taconazo-theme')||'red')}catch(e){selectTheme('red')}
+$('profileResetPassword').onclick=async()=>{const email=auth.currentUser?.email;if(!email){setStatus('profileStatus','Esta cuenta no tiene correo vinculado. Consulta al encargado.');return}lock('profileResetPassword',true);setStatus('profileStatus','Enviando enlace...');try{await sendPasswordResetEmail(auth,email);setStatus('profileStatus','Si existe tu cuenta, revisa tu correo para cambiar la contraseña.',true)}catch(e){setStatus('profileStatus',reportError(e))}finally{lock('profileResetPassword',false)}};
 $('signupForm').addEventListener('submit',async e=>{e.preventDefault();if(registerBusy)return;registerBusy=true;lock('signupSubmit',true);setStatus('signupStatus','Creando tu cuenta...');try{const nombre=$('signupName').value.trim().replace(/\s+/g,' '),correo=$('signupEmail').value.trim();if(nombre.length<3)throw Error('Escribe nombre y apellidos.');const userCred=await createUserWithEmailAndPassword(auth,correo,$('signupPassword').value);await setDoc(doc(db,'clientes',userCred.user.uid),{nombre,correo:userCred.user.email,telefono:'',puntos:0,puntosAcumulados:0,visitas:0,nivel:1,fechaRegistro:serverTimestamp(),premiosCanjeados:[],origen:'web'});$('signupForm').reset();setStatus('signupStatus','Cuenta creada.',true);await openCustomer(userCred.user)}catch(err){setStatus('signupStatus','No se completó el registro: '+reportError(err)+'. Si se creó tu correo, entra con «Ya tengo cuenta»; no abras otra cuenta.')}finally{registerBusy=false;lock('signupSubmit',false)}});
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();lock('loginSubmit',true);setStatus('loginStatus','Entrando...');try{await signInWithEmailAndPassword(auth,$('loginEmail').value.trim(),$('loginPassword').value);$('loginPassword').value=''}catch(err){setStatus('loginStatus',reportError(err))}finally{lock('loginSubmit',false)}});
 $('staffForm').addEventListener('submit',async e=>{e.preventDefault();lock('staffSubmit',true);setStatus('staffStatus','Entrando...');try{const result=await signInWithEmailAndPassword(auth,$('staffEmail').value.trim(),$('staffPassword').value);$('staffPassword').value='';if(result.user.uid!==ADMIN_UID){await signOut(auth);throw Error('Esta cuenta no es de administrador.')}}catch(err){setStatus('staffStatus',reportError(err))}finally{lock('staffSubmit',false)}});
 $('resetPassword').onclick=async()=>{const email=$('loginEmail').value.trim();if(!email){setStatus('loginStatus','Primero escribe tu correo.');return}try{await sendPasswordResetEmail(auth,email);setStatus('loginStatus','Si existe la cuenta, recibirás un correo para cambiar la contraseña.',true)}catch(err){setStatus('loginStatus',reportError(err))}};
-function renderCard(d){const total=lifetime(d),i=rankIndex(total),next=ranks[i+1];$('cardName').textContent=displayName(d);$('cardRank').textContent=ranks[i][0];$('cardLevel').textContent='NIVEL '+(i+1);$('cardPoints').textContent=formattedPoints(pts(d));$('cardLifetime').textContent=formattedPoints(total);$('progressText').textContent=next?`Te faltan ${next[1]-total} puntos acumulados para ${next[0]}.`:'🏆 ¡Llegaste al rango máximo del Club!';const progress=next?Math.max(0,Math.min(100,Math.round((total-ranks[i][1])*100/(next[1]-ranks[i][1])))):100;$('progressBar').style.width=progress+'%';$('progressTrack').setAttribute('aria-valuenow',String(progress))}
+function renderCard(d){const total=lifetime(d),i=rankIndex(total),next=ranks[i+1];
+$('profileName').textContent=String(d.nombre||'Sin nombre');
+$('profileEmail').textContent=String(d.correo||auth.currentUser?.email||'Sin correo');
+$('profilePhone').textContent=String(d.telefono||'No registrado');
+$('rewardsBalance').textContent=formattedPoints(pts(d));
+renderBadges(total);
+$('cardName').textContent=displayName(d);$('cardRank').textContent=ranks[i][0];$('cardLevel').textContent='NIVEL '+(i+1);$('cardPoints').textContent=formattedPoints(pts(d));$('cardLifetime').textContent=formattedPoints(total);$('progressText').textContent=next?`Te faltan ${next[1]-total} puntos acumulados para ${next[0]}.`:'🏆 ¡Llegaste al rango máximo del Club!';const progress=next?Math.max(0,Math.min(100,Math.round((total-ranks[i][1])*100/(next[1]-ranks[i][1])))):100;$('progressBar').style.width=progress+'%';$('progressTrack').setAttribute('aria-valuenow',String(progress))}
 async function openCustomer(user){showCustomerShell();setStatus('customerStatus','Consultando tus puntos...');try{const snapshot=await getDoc(doc(db,'clientes',user.uid));if(!snapshot.exists()){setStatus('customerStatus','Tu cuenta existe, pero aún no tiene ficha de puntos. Solicita ayuda al encargado; no te registres otra vez.');return}renderCard(snapshot.data());setStatus('customerStatus','',true)}catch(err){setStatus('customerStatus','No se pudo cargar tu tarjeta: '+reportError(err))}}
 $('customerRefresh').onclick=()=>{const user=auth.currentUser;if(user&&user.uid!==ADMIN_UID)openCustomer(user)};
-$('showRewards').onclick=()=>toggle('rewardsBlock',$('rewardsBlock').classList.contains('hidden'));
+
 const rewardList=$('rewardsList');prizes.forEach(([name,p])=>{const row=document.createElement('div');row.className='reward';const a=document.createElement('span');a.textContent=name;const b=document.createElement('span');b.textContent=p+' puntos';row.append(a,b);rewardList.append(row);const opt=document.createElement('option');opt.value=name;opt.textContent=name+' — '+p+' puntos';$('rewardSelect').append(opt)});
 onAuthStateChanged(auth,async user=>{if(!user){showGuest();clients=[];selectedId=null;return}if(user.uid===ADMIN_UID){showAdmin();$('adminEmail').textContent='Sesión: '+(user.email||'Administrador');try{await loadClients();setStatus('adminStatus','Panel listo.',true)}catch(err){setStatus('adminStatus',reportError(err))}}else await openCustomer(user)});
 function checkAdmin(){if(auth.currentUser?.uid!==ADMIN_UID)throw Error('Acceso solo para administrador.');}
