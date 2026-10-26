@@ -62,7 +62,8 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <body>
 <header><h1>🌮 EL TACONAZO CLUB</h1><p>¡Tus tacos te dan recompensas!</p></header>
 <main>
-<section class="panel" id="welcome"><h2>Bienvenido al Club</h2><p>Regístrate para consultar tus puntos, descubrir tu rango y canjear premios.</p><div class="twobtn"><button id="goSignup">Registrarme</button><button class="secondary" id="goLogin">Ya tengo cuenta</button></div><p class="muted">¿No tienes correo? El personal puede registrar tus compras a tu nombre.</p></section>
+<section class="panel" id="welcome"><h2>Bienvenido al Club</h2><p>Regístrate para consultar tus puntos, descubrir tu rango y canjear premios.</p><div class="twobtn"><button id="goSignup">Registrarme</button><button class="secondary" id="goLogin">Ya tengo cuenta</button></div><p class="muted">¿No tienes correo? El personal puede registrar tus compras a tu nombre.</p><button class="full ghost" id="alreadyStaff">Ya me registraron en la taquería</button></section>
+<section class="panel hidden" id="linkHelp"><h2>Ya me registraron en la taquería</h2><p>Si el encargado te anotó con tu nombre y teléfono, tus puntos están guardados.</p><p class="note">1. Crea tu cuenta digital con un correo y contraseña. 2. Cuando vuelvas al local, muestra al encargado tu correo y confirma tu identidad con él. 3. El encargado vinculará los puntos de tu ficha anterior a tu tarjeta digital.</p><p class="muted">Por tu seguridad, escribir un teléfono no basta para reclamar una cuenta.</p><button class="full" id="linkGoSignup">Crear mi cuenta digital</button><button class="ghost full" data-back>Volver</button></section>
 <section class="panel hidden" id="signup"><h2>Crear cuenta</h2><form id="signupForm"><label for="signupName">Nombre y apellidos</label><input id="signupName" required maxlength="100" minlength="3" autocomplete="name"><label for="signupEmail">Correo electrónico</label><input id="signupEmail" type="email" required autocomplete="email"><label for="signupPassword">Contraseña (mínimo 6 caracteres)</label><input id="signupPassword" type="password" required minlength="6" autocomplete="new-password"><div class="checkrow"><input id="consent" type="checkbox" required><span>Autorizo guardar mis datos para administrar mis puntos y recompensas.</span></div><button class="full" id="signupSubmit">Crear mi cuenta</button></form><p id="signupStatus" class="status" role="status"></p><button class="ghost full" data-back>Volver</button></section>
 <section class="panel hidden" id="login"><h2>Entrar al Club</h2><form id="loginForm"><label for="loginEmail">Correo</label><input id="loginEmail" type="email" required autocomplete="username"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" required autocomplete="current-password"><button class="full" id="loginSubmit">Entrar</button></form><p id="loginStatus" class="status" role="status"></p><button id="resetPassword" class="ghost full">Olvidé mi contraseña</button><button class="ghost full" data-back>Volver</button></section>
 <section class="panel hidden" id="customer">
@@ -82,7 +83,7 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <h3>Settings · Seguridad</h3><p class="muted">Por seguridad, ninguna página puede mostrar tu contraseña actual. Para cambiarla, te enviamos un enlace a tu correo.</p>
 <button class="full secondary" id="profileResetPassword">Enviar enlace para cambiar contraseña</button>
 <p id="profileStatus" class="status" role="status"></p>
-<h3>Personalizar color</h3><p class="muted">Personaliza el fondo, la tarjeta y los detalles. Predeterminado recupera el diseño original.</p>
+<h3>¿Te registraron en la taquería?</h3><p class="note">Si el encargado ya te registró con tu nombre o teléfono, muestra en el local el correo de esta cuenta. Él verificará tus datos y pasará tus puntos anteriores a esta tarjeta. No crees cuentas adicionales.</p><h3>Personalizar color</h3><p class="muted">Personaliza el fondo, la tarjeta y los detalles. Predeterminado recupera el diseño original.</p>
 <div class="theme-picker" id="themePicker" aria-label="Colores disponibles">
 <button type="button" class="theme-dot" data-theme="default" style="--swatch:linear-gradient(135deg,#1b1d21,#b91c1c)" aria-label="Predeterminado">Original</button>
 <button type="button" class="theme-dot" data-theme="red" style="--swatch:#b91c1c" aria-label="Rojo">Rojo</button>
@@ -116,7 +117,9 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <div id="admin" class="hidden"><section class="panel"><div class="flexbar"><h2>Panel del encargado</h2><button class="ghost" id="adminLogout">Salir</button></div><p class="muted" id="adminEmail"></p><p class="note">Cada $50 de compra da 2 puntos. La primera compra de cada día da 3 puntos adicionales (hora del centro de México).</p></section>
 <section class="panel"><h2>Registrar cliente sin correo</h2><form id="adminRegisterForm"><label for="newName">Nombre y apellidos</label><input id="newName" minlength="3" required maxlength="100"><label for="newPhone">Teléfono (opcional, 10 dígitos)</label><input id="newPhone" inputmode="numeric" maxlength="10" pattern="[0-9]{10}"><button class="full" id="adminRegisterSubmit">Registrar cliente</button></form></section>
 <section class="panel"><h2>Buscar clientes</h2><input id="search" placeholder="Buscar por nombre, teléfono o correo" aria-label="Buscar clientes"><button class="secondary full" id="refreshClients">Actualizar lista</button><div id="clientList"></div></section>
-<section class="panel hidden" id="selectedPanel"><h2>Cliente seleccionado</h2><p id="selectedInfo"></p><form id="purchaseForm"><label for="amount">Importe de compra (MXN)</label><input id="amount" type="number" min="0.01" max="10000" step="0.01" required placeholder="Ej. 250"><button class="full" id="purchaseSubmit">Registrar compra</button></form><h3>Canjear premio</h3><select id="rewardSelect" aria-label="Seleccionar premio"></select><button class="full secondary" id="redeem">Canjear premio</button><h3>Títulos especiales (opcionales)</h3><select id="specialTitle" aria-label="Título especial"><option value="">Sin título especial</option><option value="rey">👑 Rey del Club</option><option value="taconazo">🌮 El Taconazo</option></select><button class="full ghost" id="saveTitle">Guardar título especial</button><button class="full danger" id="deleteClient">Eliminar cliente de prueba</button></section>
+<section class="panel hidden" id="selectedPanel"><h2>Cliente seleccionado</h2><p id="selectedInfo"></p><form id="purchaseForm"><label for="amount">Importe de compra (MXN)</label><input id="amount" type="number" min="0.01" max="10000" step="0.01" required placeholder="Ej. 250"><button class="full" id="purchaseSubmit">Registrar compra</button></form><h3>Canjear premio</h3><select id="rewardSelect" aria-label="Seleccionar premio"></select><button class="full secondary" id="redeem">Canjear premio</button><h3>Títulos especiales (opcionales)</h3><select id="specialTitle" aria-label="Título especial"><option value="">Sin título especial</option><option value="rey">👑 Rey del Club</option><option value="taconazo">🌮 El Taconazo</option></select><button class="full ghost" id="saveTitle">Guardar título especial</button>
+<div id="linkStaffPanel" class="hidden"><h3>Vincular a cuenta digital</h3><p class="muted">Primero verifica en persona la identidad del cliente. Luego ingresa el correo con el que se registró en la web. Se conservarán sus puntos y su rango acumulado.</p><label for="targetEmail">Correo de la nueva cuenta digital</label><input id="targetEmail" type="email" autocomplete="off" placeholder="correo@ejemplo.com"><button id="linkStaffSubmit" class="full">Vincular puntos a esa cuenta</button><p class="status" id="linkStaffStatus" role="status"></p></div>
+<button class="full danger" id="deleteClient">Eliminar cliente de prueba</button></section>
 <section class="panel"><h2>Alertas de inactividad</h2><div id="inactiveList"></div></section><section class="panel"><p class="status" id="adminStatus" role="status"></p></section></div>
 <footer>El Taconazo Club · Recompensas sujetas a disponibilidad</footer>
 </main>
@@ -165,13 +168,13 @@ const dateKey=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Americ
 const reportError=e=>({'auth/email-already-in-use':'Ese correo ya está registrado. Entra en «Ya tengo cuenta».','auth/invalid-email':'Correo inválido.','auth/weak-password':'La contraseña necesita al menos 6 caracteres.','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/network-request-failed':'Sin conexión a Firebase. Revisa tu Internet.','permission-denied':'Firebase rechazó el permiso. Revisa las reglas de Firestore.'}[e?.code]||e?.message||'Error inesperado');
 const setStatus=(id,s,ok=false)=>{const el=$(id);el.textContent=s;el.classList.toggle('success',ok)};
 const toggle=(id,show)=>$(id).classList.toggle('hidden',!show);
-const guestPanels=['welcome','signup','login','staffLogin'];
+const guestPanels=['welcome','signup','login','staffLogin','linkHelp'];
 function showGuest(id='welcome'){guestPanels.forEach(n=>toggle(n,n===id));toggle('customer',false);toggle('admin',false);toggle('staffAccess',true)}
 function showAdmin(){guestPanels.forEach(n=>toggle(n,false));toggle('customer',false);toggle('admin',true);toggle('staffAccess',false)}
 function showCustomerShell(){guestPanels.forEach(n=>toggle(n,false));toggle('admin',false);toggle('customer',true);toggle('staffAccess',false);showTab('Home')}
 const lock=(id,busy)=>$(id).disabled=busy;
 let registerBusy=false,adminRegisterBusy=false,purchaseBusy=false,redeemBusy=false,clients=[],selectedId=null;
-$('goSignup').onclick=()=>showGuest('signup');$('goLogin').onclick=()=>showGuest('login');$('staffAccess').onclick=()=>showGuest('staffLogin');document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>showGuest());
+$('goSignup').onclick=()=>showGuest('signup');$('alreadyStaff').onclick=()=>showGuest('linkHelp');$('linkGoSignup').onclick=()=>showGuest('signup');$('goLogin').onclick=()=>showGuest('login');$('staffAccess').onclick=()=>showGuest('staffLogin');document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>showGuest());
 $('customerLogout').onclick=$('adminLogout').onclick=()=>signOut(auth);
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>selectTheme(b.dataset.theme));
@@ -195,12 +198,60 @@ const rewardList=$('rewardsList');prizes.forEach(([name,p])=>{const row=document
 onAuthStateChanged(auth,async user=>{if(!user){showGuest();clients=[];selectedId=null;return}if(user.uid===ADMIN_UID){showAdmin();$('adminEmail').textContent='Sesión: '+(user.email||'Administrador');try{await loadClients();setStatus('adminStatus','Panel listo.',true)}catch(err){setStatus('adminStatus',reportError(err))}}else await openCustomer(user)});
 function checkAdmin(){if(auth.currentUser?.uid!==ADMIN_UID)throw Error('Acceso solo para administrador.');}
 function clientCard(c){const div=document.createElement('div');div.className='client';const title=document.createElement('strong');title.textContent=displayName(c);const info=document.createElement('small');info.textContent=`${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${ranks[rankIndex(lifetime(c))][0]}`;const btn=document.createElement('button');btn.textContent='Seleccionar';btn.onclick=()=>selectClient(c.id);div.append(title,info,btn);return div}
-function renderClients(){const filter=normalize($('search').value),list=$('clientList');list.replaceChildren();const matches=clients.filter(c=>normalize(c.nombre).includes(filter)||normalize(c.correo).includes(filter)||String(c.telefono||'').includes(filter));if(!matches.length){list.textContent='No hay clientes que coincidan.';return}matches.forEach(c=>list.append(clientCard(c)))}
+function renderClients(){const filter=normalize($('search').value),list=$('clientList');list.replaceChildren();const matches=clients.filter(c=>!c.vinculadoA&&(normalize(c.nombre).includes(filter)||normalize(c.correo).includes(filter)||String(c.telefono||'').includes(filter)));if(!matches.length){list.textContent='No hay clientes que coincidan.';return}matches.forEach(c=>list.append(clientCard(c)))}
 const ageDays=ts=>ts?.toDate?Math.max(0,Math.floor((Date.now()-ts.toDate().getTime())/86400000)):null;
 function renderInactive(){const el=$('inactiveList');el.replaceChildren();const matches=clients.map(c=>({...c,dias:ageDays(c.ultimaCompra)})).filter(c=>c.dias!==null&&c.dias>=21).sort((a,b)=>b.dias-a.dias);if(!matches.length){el.textContent='Sin alertas: ningún cliente con compras registradas supera 21 días de inactividad.';return}for(const c of matches){const p=document.createElement('p');p.textContent=`${c.dias>=30?'⚠️':'⏳'} ${displayName(c)} — ${c.dias} días sin comprar`;el.append(p)}}
 async function loadClients(){checkAdmin();const snap=await getDocs(collection(db,'clientes'));clients=snap.docs.map(d=>({id:d.id,...d.data()}));renderClients();renderInactive();if(selectedId){const c=clients.find(c=>c.id===selectedId);if(c)fillSelected(c);else{selectedId=null;toggle('selectedPanel',false)}}}
-function fillSelected(c){toggle('selectedPanel',true);$('specialTitle').value=c.tituloEspecial||'';$('selectedInfo').textContent=`${displayName(c)} · ${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${formattedPoints(lifetime(c))} acumulados · ${c.visitas||0} visitas · ${ranks[rankIndex(lifetime(c))][0]}`}
+function fillSelected(c){toggle('selectedPanel',true);toggle('linkStaffPanel',c.origen==='personal'&&!c.vinculadoA);$('targetEmail').value='';setStatus('linkStaffStatus','');$('specialTitle').value=c.tituloEspecial||'';$('selectedInfo').textContent=`${displayName(c)} · ${c.correo||c.telefono||'Sin contacto'} · ${formattedPoints(pts(c))} disponibles · ${formattedPoints(lifetime(c))} acumulados · ${c.visitas||0} visitas · ${ranks[rankIndex(lifetime(c))][0]}`}
 function selectClient(id){selectedId=id;const c=clients.find(c=>c.id===id);if(c){fillSelected(c);$('selectedPanel').scrollIntoView({behavior:'smooth',block:'start'})}}
+let linkBusy=false;
+$('linkStaffSubmit').onclick=async()=>{
+if(linkBusy)return;linkBusy=true;lock('linkStaffSubmit',true);
+try{
+ checkAdmin();
+ const sourceId=selectedId;
+ const source=clients.find(c=>c.id===sourceId);
+ if(!source||source.origen!=='personal'||source.vinculadoA)throw Error('Selecciona una ficha presencial que aún no esté vinculada.');
+ const email=$('targetEmail').value.trim().toLowerCase();
+ if(!email||!email.includes('@'))throw Error('Escribe el correo de la cuenta digital.');
+ const matches=clients.filter(c=>c.origen==='web'&&String(c.correo||'').trim().toLowerCase()===email&&!c.vinculadoA);
+ if(matches.length!==1)throw Error('No se encontró una cuenta digital única con ese correo. El cliente debe registrarse primero en la web.');
+ const target=matches[0];
+ if(target.id===sourceId)throw Error('No se puede vincular una ficha consigo misma.');
+ const confirmed=confirm('Verifica que el cliente esté presente y haya demostrado ser dueño de la ficha presencial.\n\nORIGEN: '+source.nombre+' · '+(source.telefono||'Sin teléfono')+'\nPuntos: '+pts(source)+' · Acumulados: '+lifetime(source)+'\n\nDESTINO: '+target.nombre+' · '+target.correo+'\n\n¿Confirmas transferir los puntos y marcar la ficha presencial como vinculada?');
+ if(!confirmed)return;
+ await runTransaction(db,async tx=>{
+   const fromRef=doc(db,'clientes',sourceId),toRef=doc(db,'clientes',target.id);
+   const fromSnap=await tx.get(fromRef),toSnap=await tx.get(toRef);
+   if(!fromSnap.exists()||!toSnap.exists())throw Error('Alguna ficha ya no existe.');
+   const from=fromSnap.data(),to=toSnap.data();
+   if(from.origen!=='personal'||from.vinculadoA||to.origen!=='web'||to.vinculadoA)throw Error('Alguna ficha cambió o ya fue vinculada.');
+   if(String(to.correo||'').trim().toLowerCase()!==email)throw Error('El correo digital cambió.');
+   if(!safePoints(from.puntos)||!safePoints(to.puntos)||!safePoints(lifetime(from))||!safePoints(lifetime(to)))throw Error('Saldo inválido: necesita revisión.');
+   const points=from.puntos+to.puntos,all=lifetime(from)+lifetime(to);
+   if(!safePoints(points)||!safePoints(all))throw Error('El saldo supera el límite permitido.');
+   const visitsFrom=Number.isSafeInteger(from.visitas)&&from.visitas>=0?from.visitas:0;
+   const visitsTo=Number.isSafeInteger(to.visitas)&&to.visitas>=0?to.visitas:0;
+   const purchases=[from.ultimaCompra,to.ultimaCompra].filter(v=>v?.toMillis).sort((a,b)=>b.toMillis()-a.toMillis());
+   const newData={
+     puntos:points,puntosAcumulados:all,nivel:rankIndex(all)+1,
+     visitas:visitsFrom+visitsTo,
+     premiosCanjeados:[...(Array.isArray(to.premiosCanjeados)?to.premiosCanjeados:[]),...(Array.isArray(from.premiosCanjeados)?from.premiosCanjeados:[])],
+     fechaVinculacion:serverTimestamp(),origenVinculacion:sourceId
+   };
+   if(purchases.length)newData.ultimaCompra=purchases[0];
+   // Mantener la clave del bono diario para impedir que se repita al vincular.
+   if(from.ultimaVisitaPuntos===dateKey()||to.ultimaVisitaPuntos===dateKey())newData.ultimaVisitaPuntos=dateKey();
+   if(from.tituloEspecial&&!to.tituloEspecial)newData.tituloEspecial=from.tituloEspecial;
+   tx.update(toRef,newData);
+   tx.update(fromRef,{puntos:0,puntosAcumulados:0,vinculadoA:target.id,fechaVinculacion:serverTimestamp()});
+ });
+ await loadClients();
+ setStatus('adminStatus','Ficha vinculada exitosamente a '+target.correo+'. Los puntos se transfirieron una sola vez.',true);
+ setStatus('linkStaffStatus','Vinculación completada.',true);
+}catch(err){setStatus('linkStaffStatus','No se vinculó: '+reportError(err))}
+finally{linkBusy=false;lock('linkStaffSubmit',false)}
+};
 $('search').addEventListener('input',renderClients);$('refreshClients').onclick=async()=>{try{await loadClients();setStatus('adminStatus','Lista actualizada.',true)}catch(err){setStatus('adminStatus',reportError(err))}};
 $('adminRegisterForm').addEventListener('submit',async e=>{e.preventDefault();if(adminRegisterBusy)return;adminRegisterBusy=true;lock('adminRegisterSubmit',true);try{checkAdmin();const nombreBase=$('newName').value.trim().replace(/\s+/g,' '),telefono=$('newPhone').value.trim();if(nombreBase.length<3)throw Error('Escribe nombre y apellidos.');if(telefono&&!/^\d{10}$/.test(telefono))throw Error('El teléfono debe tener 10 dígitos.');await loadClients();if(telefono&&clients.some(c=>c.telefono===telefono)&&!confirm('Este teléfono ya está registrado. ¿Confirmas que es otra persona?'))return;const used=new Set(clients.map(c=>normalize(c.nombre)));let nombre=nombreBase,i=2;while(used.has(normalize(nombre))){nombre=nombreBase+' '+i++}if(nombre!==nombreBase&&!confirm(`Ya existe ese nombre. ¿Registrar a otra persona como ${nombre}?`))return;const ref=doc(collection(db,'clientes'));await setDoc(ref,{nombre,telefono,correo:'',puntos:0,puntosAcumulados:0,visitas:0,nivel:1,fechaRegistro:serverTimestamp(),premiosCanjeados:[],origen:'personal'});$('adminRegisterForm').reset();await loadClients();setStatus('adminStatus','Cliente registrado: '+nombre,true)}catch(err){setStatus('adminStatus','No se pudo registrar: '+reportError(err))}finally{adminRegisterBusy=false;lock('adminRegisterSubmit',false)}});
 $('purchaseForm').addEventListener('submit',async e=>{e.preventDefault();if(purchaseBusy)return;purchaseBusy=true;lock('purchaseSubmit',true);try{checkAdmin();if(!selectedId)throw Error('Primero selecciona un cliente.');const centavos=Math.round(Number($('amount').value)*100);if(!Number.isSafeInteger(centavos)||centavos<1||centavos>1000000)throw Error('Monto inválido (máximo $10,000).');const client=clients.find(c=>c.id===selectedId);if(!confirm(`¿Registrar una compra de ${money(centavos/100)} para ${client?.nombre||'el cliente'}?`))return;const key=dateKey();let earned=0;await runTransaction(db,async tx=>{const ref=doc(db,'clientes',selectedId),snap=await tx.get(ref);if(!snap.exists())throw Error('Ya no existe el cliente.');const d=snap.data();if(!safePoints(d.puntos)||!safePoints(lifetime(d)))throw Error('Saldo inválido. Requiere revisión.');const bonus=d.ultimaVisitaPuntos===key?0:3;earned=Math.floor(centavos/5000)*2+bonus;const nextPoints=d.puntos+earned,total=lifetime(d)+earned;if(!safePoints(nextPoints)||!safePoints(total))throw Error('Límite de puntos excedido.');tx.update(ref,{puntos:nextPoints,puntosAcumulados:total,nivel:rankIndex(total)+1,visitas:(d.visitas||0)+1,ultimaVisitaPuntos:key,ultimaCompra:serverTimestamp()})});$('purchaseForm').reset();await loadClients();setStatus('adminStatus','Compra registrada: +'+earned+' puntos.',true)}catch(err){setStatus('adminStatus','Compra no registrada: '+reportError(err))}finally{purchaseBusy=false;lock('purchaseSubmit',false)}});
