@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#211416">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-<link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./club-icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./club-icon-192.png">
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="El Taconazo Club">
@@ -68,9 +68,12 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 .qr-section{margin:18px 0;text-align:center;padding:14px 8px;background:#19191d;border:1px solid var(--line);border-radius:14px}
 .qr-section h3{margin:2px 0 12px}.qr-square{display:flex;align-items:center;justify-content:center;width:max-content;min-width:188px;min-height:188px;max-width:100%;margin:0 auto;padding:10px;background:#fff;color:#222;border-radius:12px;font-size:12px}
 .qr-square img,.qr-square canvas{max-width:100%;height:auto}.qr-fallback{font-size:11px;overflow-wrap:anywhere;color:var(--muted);user-select:all}
+#clubCornerLogo{position:fixed;top:76px;right:9px;width:58px;height:auto;opacity:.48;pointer-events:none;user-select:none;z-index:39;filter:drop-shadow(0 1px 3px #0009)}
+@media(max-width:390px){#clubCornerLogo{width:48px;right:6px;top:76px}}
 </style>
 </head>
 <body>
+<img id="clubCornerLogo" src="./taconazo-logo-esquina.png" alt="" aria-hidden="true" width="130" height="110" decoding="async">
 <header><img src="./icon-192.png" alt="Logo de El Taconazo" width="110" height="110" style="display:block;margin:0 auto 9px;object-fit:contain"><h1>🌮 EL TACONAZO CLUB</h1><p>¡Tus tacos te dan recompensas!</p></header>
 <main>
 <section class="panel" id="welcome"><h2>Bienvenido al Club</h2><p>Regístrate para consultar tus puntos, descubrir tu rango y canjear premios.</p><div class="twobtn"><button id="goSignup">Registrarme</button><button class="secondary" id="goLogin">Ya tengo cuenta</button></div><p class="muted">¿No tienes correo? El personal puede registrar tus compras a tu nombre.</p><button class="full ghost" id="alreadyStaff">Ya me registraron en la taquería</button></section>
