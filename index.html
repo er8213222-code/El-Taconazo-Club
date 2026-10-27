@@ -310,12 +310,19 @@ function buildRewardPhoto(name,cost){
   const nameLines=wrapCardText(ctx,visibleCustomerName,740,2);
   nameLines.forEach((line,i)=>ctx.fillText(line,450,843+i*41));
   const id='TACONAZO:'+(auth.currentUser?.uid||'');
-  ctx.font='23px system-ui, sans-serif';ctx.fillStyle='#e7d5cf';ctx.fillText(id,450,933);
+  ctx.font='23px system-ui, sans-serif';ctx.fillStyle='#e7d5cf';ctx.fillText(id,450,927);
+  // Fecha y hora informativas de generación, según la hora del centro de México.
+  const generated=new Intl.DateTimeFormat('es-MX',{
+    timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit',
+    hour:'2-digit',minute:'2-digit',hour12:true
+  }).format(new Date());
+  ctx.font='23px system-ui, sans-serif';ctx.fillStyle='#fff6e9';
+  ctx.fillText('Generado: '+generated+' (hora de México)',450,964);
   ctx.font='bold 34px system-ui, sans-serif';ctx.fillStyle='#ffcf63';
-  ctx.fillText('MUÉSTRALA EN CAJA',450,1001);
+  ctx.fillText('MUÉSTRALA EN CAJA',450,1010);
   ctx.font='23px system-ui, sans-serif';ctx.fillStyle='#ffffff';
-  ctx.fillText('El personal revisa el saldo actual y confirma el canje.',450,1046);
-  ctx.font='bold 22px system-ui, sans-serif';ctx.fillText('ESTA IMAGEN NO AUTORIZA NI DESCUENTA PUNTOS',450,1088);
+  ctx.fillText('El personal revisa el saldo actual y confirma el canje.',450,1052);
+  ctx.font='bold 22px system-ui, sans-serif';ctx.fillText('ESTA IMAGEN NO AUTORIZA NI DESCUENTA PUNTOS',450,1094);
   return canvas.toDataURL('image/png');
 }
 function showRewardPhoto(name,cost){
