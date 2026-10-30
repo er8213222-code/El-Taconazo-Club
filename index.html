@@ -460,18 +460,18 @@ $('deleteClient').onclick=async()=>{try{checkAdmin();if(!selectedId)throw Error(
 #christmasAlarm .xmas-large{font-size:clamp(40px,10vw,94px);line-height:1.04;font-weight:1000;color:#fff5ce;text-shadow:0 4px 0 #c52735,0 0 30px #ffd95a;animation:xmasPulse .7s ease-in-out infinite alternate}
 #christmasAlarm .xmas-small{font-size:clamp(17px,4vw,29px);font-weight:800;color:#ffd966;margin:15px 0;letter-spacing:.07em;animation:xmasPulse 1s ease-in-out infinite alternate-reverse}
 #christmasAlarm .xmas-btn{margin-top:24px;background:#c52b34;color:white;border:2px solid #ffe8a1;border-radius:14px;padding:12px 24px;font-size:17px;font-weight:800;cursor:pointer}
-#christmasAlarm .xmas-flakes{font-size:clamp(30px,8vw,70px);animation:xmasSway 1.3s ease-in-out infinite alternate}
+#christmasTest{position:fixed;bottom:52px;left:10px;z-index:85;background:#b82734;color:white;border:1px solid #ffd876;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;box-shadow:0 2px 12px #0008;cursor:pointer}\n#christmasAlarm .xmas-flakes{font-size:clamp(30px,8vw,70px);animation:xmasSway 1.3s ease-in-out infinite alternate}
 @keyframes xmasPulse{to{transform:scale(1.065)}}
 @keyframes xmasEntrance{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
 @keyframes xmasSway{to{transform:translateY(-18px) rotate(8deg)}}
 </style>
-<div id="christmasAlarm" role="alertdialog" aria-modal="true" aria-label="¡Feliz Navidad!">
+<button id="christmasTest" type="button">🎄 Probar Navidad</button>\n<div id="christmasAlarm" role="alertdialog" aria-modal="true" aria-label="¡Feliz Navidad!">
  <div class="xmas-wrap">
   <div class="xmas-flakes">🎄 🎅 🎁</div>
   <div class="xmas-large">¡FELIZ NAVIDAD!</div>
   <div class="xmas-small">¡Feliz Navidad!</div>
   <div class="xmas-large">🎁 ¡FELIZ NAVIDAD! 🎄</div>
-  <button id="christmasClose" class="xmas-btn" type="button">Cerrar sorpresa ✕</button>
+  <button id="christmasReplay" class="xmas-btn" type="button">🔊 Escuchar otra vez</button> <button id="christmasClose" class="xmas-btn" type="button">Cerrar ✕</button>
  </div>
 </div>
 <script>
@@ -485,11 +485,10 @@ $('deleteClient').onclick=async()=>{try{checkAdmin();if(!selectedId)throw Error(
      if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('¡Feliz Navidad!');u.lang='es-MX';u.volume=1;u.rate=.8;u.pitch=1.2;speechSynthesis.speak(u)}
    }catch(e){console.warn('Audio navideño bloqueado:',e)}
  }
- function show(){
+ function reveal(){overlay.classList.add('active');playSound();setTimeout(()=>overlay.classList.remove('active'),24000)}\n document.getElementById('christmasTest').addEventListener('click',reveal);\n document.getElementById('christmasReplay').addEventListener('click',playSound);\n function show(){
    if(done||sessionStorage.getItem(key))return;
    const now=Date.now();if(now<when||now>expires)return;
-   done=true;sessionStorage.setItem(key,'1');overlay.classList.add('active');playSound();
-   setTimeout(()=>{overlay.classList.remove('active')},24000);
+   done=true;sessionStorage.setItem(key,'1');reveal();
  }
  document.getElementById('christmasClose').addEventListener('click',()=>{overlay.classList.remove('active');if('speechSynthesis' in window)speechSynthesis.cancel()});
  if(Date.now()<expires){show();setInterval(show,900);document.addEventListener('visibilitychange',()=>{if(!document.hidden)show()})}
