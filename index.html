@@ -452,5 +452,48 @@ $('redeem').onclick=async()=>{prepareClubSound();if(redeemBusy)return;redeemBusy
 $('saveTitle').onclick=async()=>{try{checkAdmin();if(!selectedId)throw Error('Selecciona un cliente.');const role=$('specialTitle').value,c=clients.find(c=>c.id===selectedId);if(!['','rey','taconazo'].includes(role))throw Error('Título inválido.');if(!confirm(`¿Guardar este título para ${c?.nombre}?`))return;lock('saveTitle',true);const snap=await getDocs(collection(db,'clientes')),batch=writeBatch(db);snap.docs.forEach(d=>{if(role&&d.id!==selectedId&&d.data().tituloEspecial===role)batch.update(d.ref,{tituloEspecial:''})});batch.update(doc(db,'clientes',selectedId),{tituloEspecial:role});await batch.commit();await loadClients();setStatus('adminStatus','Título actualizado.',true)}catch(err){setStatus('adminStatus',reportError(err))}finally{lock('saveTitle',false)}};
 $('deleteClient').onclick=async()=>{try{checkAdmin();if(!selectedId)throw Error('Selecciona un cliente.');const c=clients.find(c=>c.id===selectedId);if(!confirm(`¿BORRAR definitivamente la ficha de ${c?.nombre}, sus puntos e historial?`))return;if(!confirm('Última confirmación: esta acción no se puede deshacer. La cuenta de Authentication NO se borra.'))return;lock('deleteClient',true);await deleteDoc(doc(db,'clientes',selectedId));selectedId=null;toggle('selectedPanel',false);await loadClients();setStatus('adminStatus','Ficha eliminada.',true)}catch(err){setStatus('adminStatus',reportError(err))}finally{lock('deleteClient',false)}};
 </script>
+<!-- Aviso festivo temporal: 29 oct 2026, 8:19 p. m., hora del centro de México -->
+<style>
+#christmasAlarm{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at center,#1b6837 0%,#062415 52%,#100609 100%);text-align:center;overflow:hidden}
+#christmasAlarm.active{display:flex}
+#christmasAlarm .xmas-wrap{max-width:620px;width:100%;animation:xmasEntrance .55s ease-out both}
+#christmasAlarm .xmas-large{font-size:clamp(40px,10vw,94px);line-height:1.04;font-weight:1000;color:#fff5ce;text-shadow:0 4px 0 #c52735,0 0 30px #ffd95a;animation:xmasPulse .7s ease-in-out infinite alternate}
+#christmasAlarm .xmas-small{font-size:clamp(17px,4vw,29px);font-weight:800;color:#ffd966;margin:15px 0;letter-spacing:.07em;animation:xmasPulse 1s ease-in-out infinite alternate-reverse}
+#christmasAlarm .xmas-btn{margin-top:24px;background:#c52b34;color:white;border:2px solid #ffe8a1;border-radius:14px;padding:12px 24px;font-size:17px;font-weight:800;cursor:pointer}
+#christmasAlarm .xmas-flakes{font-size:clamp(30px,8vw,70px);animation:xmasSway 1.3s ease-in-out infinite alternate}
+@keyframes xmasPulse{to{transform:scale(1.065)}}
+@keyframes xmasEntrance{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes xmasSway{to{transform:translateY(-18px) rotate(8deg)}}
+</style>
+<div id="christmasAlarm" role="alertdialog" aria-modal="true" aria-label="¡Feliz Navidad!">
+ <div class="xmas-wrap">
+  <div class="xmas-flakes">🎄 🎅 🎁</div>
+  <div class="xmas-large">¡FELIZ NAVIDAD!</div>
+  <div class="xmas-small">¡Feliz Navidad!</div>
+  <div class="xmas-large">🎁 ¡FELIZ NAVIDAD! 🎄</div>
+  <button id="christmasClose" class="xmas-btn" type="button">Cerrar sorpresa ✕</button>
+ </div>
+</div>
+<script>
+(function(){
+ const when=Date.UTC(2026,9,30,2,19,0),expires=when+3*60*1000,key='taconazo-navidad-2026-2019';
+ const overlay=document.getElementById('christmasAlarm');let done=false;
+ function playSound(){
+   try{
+     const C=window.AudioContext||window.webkitAudioContext;
+     if(C){const ctx=new C();let t=ctx.currentTime+.05;[523.25,659.25,783.99,1046.5,783.99,1046.5].forEach((hz,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=hz;g.gain.setValueAtTime(.0001,t+i*.18);g.gain.exponentialRampToValueAtTime(.42,t+i*.18+.015);g.gain.exponentialRampToValueAtTime(.0001,t+i*.18+.17);o.connect(g).connect(ctx.destination);o.start(t+i*.18);o.stop(t+i*.18+.18)});ctx.resume().catch(()=>{})}
+     if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('¡Feliz Navidad!');u.lang='es-MX';u.volume=1;u.rate=.8;u.pitch=1.2;speechSynthesis.speak(u)}
+   }catch(e){console.warn('Audio navideño bloqueado:',e)}
+ }
+ function show(){
+   if(done||sessionStorage.getItem(key))return;
+   const now=Date.now();if(now<when||now>expires)return;
+   done=true;sessionStorage.setItem(key,'1');overlay.classList.add('active');playSound();
+   setTimeout(()=>{overlay.classList.remove('active')},24000);
+ }
+ document.getElementById('christmasClose').addEventListener('click',()=>{overlay.classList.remove('active');if('speechSynthesis' in window)speechSynthesis.cancel()});
+ if(Date.now()<expires){show();setInterval(show,900);document.addEventListener('visibilitychange',()=>{if(!document.hidden)show()})}
+})();
+</script>
 </body>
 </html>
