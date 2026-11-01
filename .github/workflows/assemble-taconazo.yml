@@ -1,0 +1,28 @@
+name: Publicar video completo El Taconazo
+on:
+  push:
+    paths:
+      - ".github/workflows/assemble-taconazo.yml"
+      - "assets/taconazo-video-parts/**"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-video:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+      - name: Reconstruir MP4 sin recomprimir y verificar checksum
+        run: |
+          cat assets/taconazo-video-parts/part-*.bin > assets/El_Taconazo_CORREGIDO_final.mp4
+          echo "d4b85ce33715f3ea0c9539290be49337cf487a5d3c4bd33eee90bb0b41abb198  assets/El_Taconazo_CORREGIDO_final.mp4" | sha256sum -c -
+      - name: Publicar MP4
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/El_Taconazo_CORREGIDO_final.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "Publicar MP4 verificado de El Taconazo"
+            git push
+          fi
