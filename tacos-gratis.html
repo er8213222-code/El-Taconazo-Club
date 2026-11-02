@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="wrap">
-<header><a class="brand" href="tv.html">🌮 EL TACONAZO</a><span class="pill">PROMOCIÓN ESPECIAL</span></header>
+<header><span class="brand">🌮 EL TACONAZO</span><span class="pill">PROMOCIÓN ESPECIAL</span></header>
 <main>
 <section class="hero">
 <div class="taco" role="img" aria-label="Taco">🌮</div>
@@ -44,16 +44,40 @@
 <div class="step" style="justify-content:center"><b>3</b> TU CÓDIGO QR</div>
 <h2>¡Has ganado tus 15 tacos!</h2>
 <p style="font-size:19px;font-weight:800">Ordena desde la app escaneando este código QR.</p>
-<div class="qr-image"><img alt="Código QR para abrir la aplicación de pedido de 15 tacos de El Taconazo" src="https://quickchart.io/qr?size=320&margin=2&text=https%3A%2F%2Fer8213222-code.github.io%2FEl-Taconazo-Club%2Fpedir-tacos.html%3Fpromo%3D15TACOS" width="266" height="266" loading="lazy"></div>
-<p class="small">Tu captura deberá validarse por WhatsApp antes de confirmar la promoción.</p>
-<a class="btn btn-gold" href="pedir-tacos.html?promo=15TACOS">🌮 Abrir la app para ordenar</a>
+<div class="qr-image"><img alt="Código QR sorpresa de El Taconazo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAFcAQAAAACsbTuBAAAC5ElEQVR42u2bQY6bQBBFXwESlrJgboCjbLJLbsAcIVfJCWBukAtFgoNEMQeIAouRQAJ+Fo2NnUysZGf3dG8Q9JcXv7qqfv9um/jn0Uf8xwjgmwS3dhyPQBsdI9uY2QM0p+kqUHf34ARsAWBOGHdgMO4AA8rP0UI8Ae5joO7uwN0L4MbM9gCUWiAVmVTHWj8+rZn/+y9Xl8sm8Hxn4FS2hyZBrVk5uOAH6nwFj3bs3ZiezKpAnWdgdDBJkiaKgfJgqrdJV9MlSQNld6WYB569BMup9K1VxyJzK6WNYHbTu0CdF6XgbAzoAIWcrnOl4Gx0gbr7B/dm1RiBGvsEQLM7B7Rm9gWz965NQDEgTZBKWlwpOC2IGsgWiMPauGFwk8n2sTRge2C2tcJXfQSx1MbS8xVPZgk8e1v567M3l8gu1ytMdSx1hOz2JtxrFb+IemfSQOn2AqGYv2JwMWBmVg7Htk+20GRuM5BKbax6Dtb9rYLb5EzJ2R5IoN/2cLNVwB42D1btuwlk+feIWMdGn/2Miq8J2UKucDDnUeUndw/W7J4Ayg4KuUbPn25P4PlGwFfw3Us7+gGIVTtdVwzb7Krr1kfg2Y/sXkcqOS9XkupUFVBMlFIIt19S7VzGx4LZyt4k6SmBPqJ4DlLttYET2rdqMln+LSkGyGcjxrJOIPoHJ+8WmsdAnS8GjiQdYtfvt9aeqtpO8eqg6/wI98FORzQu3GvUddLvZItT84E6b7L7qOahcEZd7exZSWTLtV1b9fJb4Pm+wNNLbs/FVVtMdSp7AGZTB01ybAdBBHoBPl3XIZUOwGjqZivXwjBBb1YGze9No6+BfKKQyDcll26NPlzJ8BKso513AKDuroDHiN7sEewjFAPNB6mOVfXr5a3A862DN7+ug8asQla6fh8MnNdo4ACFgBnGnfIFZiP7kZAO9LEAso7mjcLBnBfhll0U/wjcoe1o5WdgTsgCdZ6ALfwfNoD/Mn4BUNv17g5UExkAAAAASUVORK5CYII=" width="266" height="266"></div>
+<button type="button" id="melodyBtn" class="btn btn-gold">♫ Escuchar musiquita</button>
 </section>
 </main>
-<footer>EL TACONAZO © 2026 · Promoción sujeta a revisión de capturas y confirmación del negocio. <a href="tv.html">Volver a El Taconazo TV</a></footer>
+<footer>EL TACONAZO © 2026 · Una sorpresa para nuestros seguidores.</footer>
 </div>
 <script>
 (function(){
+ const notes=["Si","La","Si","La","Do","Re","Do","Si","Do","Mi","Fa","Mi","Re","Mi","Si","La","Si","La","Si"];
+ const frequencies={Do:523.25,Re:587.33,Mi:659.25,Fa:698.46,La:440,Si:493.88};
+ let audioContext;
+ function playMelody(){
+   try{
+     const AudioContext=window.AudioContext||window.webkitAudioContext;
+     if(!AudioContext)return;
+     audioContext=audioContext||new AudioContext();
+     audioContext.resume().catch(()=>{});
+     let t=audioContext.currentTime+0.06;
+     notes.forEach((note,index)=>{
+       const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
+       const duration=(index===notes.length-1?0.42:0.24);
+       oscillator.type="sine";
+       oscillator.frequency.setValueAtTime(frequencies[note],t);
+       gain.gain.setValueAtTime(0.0001,t);
+       gain.gain.exponentialRampToValueAtTime(0.13,t+0.025);
+       gain.gain.exponentialRampToValueAtTime(0.0001,t+duration-0.018);
+       oscillator.connect(gain);gain.connect(audioContext.destination);
+       oscillator.start(t);oscillator.stop(t+duration);
+       t+=duration;
+     });
+   }catch(e){console.info("La reproducción de audio no está disponible.");}
+ }
  const btn=document.getElementById("sendWa");
+ document.getElementById("melodyBtn").addEventListener("click",playMelody);
  btn.addEventListener("click",function(ev){
    const follows=document.getElementById("follows").checked;
    const liked=document.getElementById("liked").checked;
@@ -65,6 +89,7 @@
    }
    const win=document.getElementById("ganaste");
    win.classList.remove("hidden");
+   playMelody();
    setTimeout(function(){win.scrollIntoView({behavior:"smooth",block:"start"});},250);
  });
 })();
