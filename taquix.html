@@ -32,35 +32,67 @@ form button#mic{background:#26465b;color:#fff;border:1px solid #4c829b;font-size
 footer{text-align:center;color:#a5b8c4;font-size:12px;line-height:1.5}
 @media(max-width:450px){.identity{padding:6px 4px 15px}.bot{width:56px;height:56px;font-size:32px}.messages{max-height:52dvh}.chat{min-height:400px}}
 @media(prefers-reduced-motion:reduce){.messages{scroll-behavior:auto}}
+
+/* TAQUIX 1.1: interfaz cómoda, fluida y adaptada a pantallas pequeñas */
+body{height:100dvh;overflow:hidden}
+main{height:100dvh;max-width:860px;min-height:0;max-height:none;padding:10px clamp(10px,2.5vw,20px) max(10px,env(safe-area-inset-bottom));overflow:hidden}
+.top{margin:0 0 3px;justify-content:flex-start}.top a{font-size:12px;padding:6px 10px;border:0;background:transparent;color:#9fcad6}.top a:nth-child(2){display:none}
+.identity{gap:10px;padding:0 4px 10px;flex:none}.bot{width:42px;height:42px;font-size:24px;border-radius:14px;box-shadow:0 0 13px #2be5fa22}.identity h1{font-size:clamp(22px,5vw,30px)}.identity p{margin:0;font-size:12px}.live{font-size:11px}.dot{width:6px;height:6px}
+.chat{flex:1;min-height:0;height:100%;border-radius:19px;overflow:hidden;box-shadow:0 6px 24px #0004}
+.chathead{flex:none;position:relative;padding:10px 13px;z-index:2}.chathead strong{font-size:13px}.chathead small{font-size:11px}
+.chathead .menu{position:relative}.menu>summary{list-style:none;display:grid;place-items:center;width:34px;height:34px;border:1px solid #3e6876;border-radius:11px;background:#1d3e4f;font-size:22px;line-height:1;cursor:pointer}
+.menu>summary::-webkit-details-marker{display:none}.menu .menu-panel{position:absolute;z-index:5;right:0;top:41px;min-width:230px;max-width:calc(100vw - 34px);background:#182b3a;border:1px solid #517287;box-shadow:0 10px 30px #0009;border-radius:13px;padding:10px;display:grid;gap:5px}
+.menu .menu-panel button,.menu .menu-panel a{background:transparent;border:0;border-radius:8px;width:100%;min-height:38px;color:#e6faff;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:8px;padding:8px 10px;text-align:left;font-weight:550}
+.menu .menu-panel button:hover,.menu .menu-panel a:hover{background:#295268}.menu .menu-panel label{display:flex;gap:9px;padding:7px 10px;color:#d6eef3;font-size:13px}.menu .menu-panel p{font-size:11px;color:#a9c8d0;margin:5px 8px;line-height:1.4}
+.messages{min-height:0;max-height:none;flex:1;overflow-y:auto;padding:15px 11px 12px;gap:15px;scrollbar-width:thin;scroll-behavior:smooth;align-items:stretch}
+.message{min-width:0;max-width:100%;width:100%;align-self:stretch;display:flex;gap:8px;align-items:flex-start}
+.message .avatar{width:25px;height:25px;border:1px solid #335b6b;font-size:15px;border-radius:8px;flex:none}
+.message.bot .bubble{flex:1 1 auto;min-width:0;width:auto;max-width:100%;background:transparent;border:0;padding:1px 2px 8px 0;border-radius:0}
+.message.user{width:fit-content;max-width:90%;align-self:flex-end;align-items:flex-start;flex-direction:row-reverse}
+.message.user .bubble{flex:0 1 auto;min-width:0;max-width:100%;border-radius:17px 17px 4px 17px;background:#234f5b;border:1px solid #3a7888;padding:10px 13px}
+.message .bubble{word-break:normal;overflow-wrap:break-word;white-space:pre-wrap;font-size:15px;line-height:1.54}
+.quick{padding:6px 11px 9px;gap:6px;flex:none}.quick button{padding:6px 10px;font-size:12px;background:#19394b;border:1px solid #386477}.quick.hidden{display:none}
+form{flex:none;display:flex;align-items:flex-end;gap:6px;padding:9px;background:#132637}
+form textarea{display:block;resize:none;overflow-y:auto;min-height:42px;max-height:126px;line-height:1.45;flex:1;min-width:0;width:100%;margin:0;padding:11px 12px;color:#fff;font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b1926;border:1px solid #477487;border-radius:15px}
+form textarea::placeholder{color:#a4b9c2}
+form button{flex:none;min-width:39px;width:39px;height:41px;border-radius:12px;padding:0;display:grid;place-items:center;font-size:18px}
+form button#mic{width:36px;min-width:36px;height:41px;border:0;background:#253e50;font-size:18px}
+form button:disabled{opacity:.5;cursor:not-allowed}
+.lower{flex:none;padding:7px 12px 10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;gap:5px;flex-wrap:nowrap}
+.lower span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lower .mode{color:#9bdcef}
+.actions,footer{display:none!important}
+@media(max-width:450px){.identity{padding:0 4px 8px}.bot{width:40px;height:40px;font-size:23px}.chat{min-height:0}.messages{max-height:none;min-height:0;padding:12px 9px 8px}.message .bubble{font-size:14px}.message.user{max-width:88%}}
+@media(prefers-reduced-motion:reduce){.messages{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <main>
-<nav class="top" aria-label="Navegación"><a href="./estrenos.html">← Estrenos</a><a href="./index.html">🌮 El Taconazo Club</a></nav>
+<nav class="top" aria-label="Navegación"><a href="./estrenos.html">← Volver a estrenos</a></nav>
 <header class="identity"><div class="bot" aria-hidden="true">🤖</div><div><h1>TAQUIX <span style="font-size:.34em;vertical-align:middle;color:var(--orange)">1.0</span></h1><p>Tu asistente del Taconazo, Zacapu</p><span class="live"><span class="dot"></span> Listo para responder</span></div></header>
 <section class="chat" aria-label="Chat con TAQUIX">
-<div class="chathead"><div><strong>💬 Habla con TAQUIX</strong><small>Horarios · Pedidos · Ubicación · Premios</small></div><button id="clear" type="button">Borrar chat</button></div>
+<div class="chathead"><div><strong>🤖 Conversación con TAQUIX</strong><small id="modeLabel">Respuestas del negocio</small></div>
+<details class="menu" id="menu"><summary aria-label="Más opciones" title="Más opciones">⋯</summary>
+<div class="menu-panel">
+<a href="./index.html">🌮 El Taconazo Club</a>
+<a href="https://wa.me/524361340982" target="_blank" rel="noopener noreferrer">💬 Pedidos por WhatsApp</a>
+<a href="https://www.google.com/maps/search/?api=1&amp;query=Arriaga+Rivera+1+Zacapu+Michoacan" target="_blank" rel="noopener noreferrer">📍 Cómo llegar</a>
+<label><input type="checkbox" id="talk"> 🔊 Leer respuestas en voz alta</label>
+<button id="clear" type="button">🗑️ Borrar conversación</button>
+<p>Historial guardado en este dispositivo. No compartas contraseñas ni datos bancarios.</p>
+</div></details></div>
 <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Mensajes de la conversación"></div>
-<div class="quick" aria-label="Preguntas frecuentes">
-<button type="button" data-ask="¿Dónde están ubicados?">📍 Ubicación</button>
-<button type="button" data-ask="¿Cuál es el horario?">🕕 Horarios</button>
-<button type="button" data-ask="¿Cómo pido tacos?">🌮 Pedidos</button>
+<div class="quick" id="quick" aria-label="Preguntas rápidas">
+<button type="button" data-ask="¿Dónde están ubicados?">📍 Dirección</button>
+<button type="button" data-ask="¿Cuál es el horario?">🕕 Horario</button>
 <button type="button" data-ask="¿Cómo gano puntos?">⭐ Puntos</button>
-<button type="button" data-ask="¿Qué premios hay?">🎁 Premios</button>
 </div>
 <form id="form" autocomplete="off">
-<input id="question" aria-label="Escribe tu pregunta" placeholder="Pregúntame lo que quieras del Taconazo…" maxlength="500" required>
-<button id="mic" type="button" aria-label="Dictar pregunta con la voz" title="Dictar pregunta" hidden>🎙️</button>
-<button type="submit" aria-label="Enviar mensaje">➤</button>
+<textarea id="question" aria-label="Escribe tu mensaje" placeholder="Escribe tu mensaje…" maxlength="800" rows="1" required></textarea>
+<button id="mic" type="button" aria-label="Dictar mensaje con la voz" title="Dictar mensaje" hidden>🎙️</button>
+<button type="submit" id="send" aria-label="Enviar mensaje">➤</button>
 </form>
-<div class="lower"><span>🔒 No tengo acceso a tu cuenta ni a tus puntos personales.</span><label><input type="checkbox" id="talk"> Leer respuestas en voz alta</label></div>
+<div class="lower"><span>🔒 Historial en este dispositivo</span><span class="mode" id="modeInfo">Modo informativo</span></div>
 </section>
-<div class="actions">
-<a class="whatsapp" href="https://wa.me/524361340982" target="_blank" rel="noopener noreferrer">💬 Pedidos por WhatsApp</a>
-<a href="./index.html">🎟️ Mi tarjeta digital</a>
-<a href="https://www.google.com/maps/search/?api=1&query=Arriaga+Rivera+1+Zacapu+Michoacan" target="_blank" rel="noopener noreferrer">🗺️ Cómo llegar</a>
-</div>
-<footer>TAQUIX responde con información del negocio; esta versión aún no tiene IA generativa conectada.<br>Si algo no está confirmado, consulta directamente a El Taconazo.</footer>
 </main>
 <script>
 (function(){
@@ -91,24 +123,76 @@ function answer(raw){
  if(has(t,['gracias','adios','hasta luego']))return '¡Con gusto! 🌮 Aquí estaré cuando necesites algo del Taconazo. ¡Que tengas excelente día!';
  return '🤖 Me gusta tu pregunta, pero todavía no tengo ese dato confirmado. Puedo ayudarte con horarios, ubicación, pedidos, patitas de puerco, puntos y premios. Para más información llama al 436 134 0982.';
 }
-function add(role,text){
+// Cuando se despliegue el Worker, cambia esta cadena por https://TU-WORKER.workers.dev/chat.
+// No colocar aquí una clave API de OpenAI.
+const API_ENDPOINT = '';
+const STORAGE_KEY = 'taquix-conversacion-v1';
+const saved=[];
+function persist(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved.slice(-45)))}catch(e){}
+}
+function save(role,text){
+ saved.push({role,text:String(text).slice(0,2600)});
+ if(saved.length>45)saved.splice(0,saved.length-45);
+ persist();
+}
+function add(role,text,remember=true){
  const row=document.createElement('div');row.className='message '+role;
  const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=role==='bot'?'🤖':'👤';avatar.setAttribute('aria-hidden','true');
- const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;
- row.append(avatar,bubble);messages.append(row);messages.scrollTop=messages.scrollHeight;
+ const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=String(text);
+ row.append(avatar,bubble);messages.append(row);
+ if(remember)save(role,text);
+ messages.scrollTop=messages.scrollHeight;
+ return row;
 }
 function speak(text){
  if(!$('talk').checked||!('speechSynthesis' in window))return;
- try{speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='es-MX';utterance.rate=1;utterance.pitch=1; speechSynthesis.speak(utterance)}catch(e){}
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-MX';u.rate=1;u.pitch=1;speechSynthesis.speak(u)}catch(e){}
 }
-function send(text){
- const clean=String(text||'').trim().slice(0,500);if(!clean)return;
- add('user',clean);const reply=answer(clean);add('bot',reply);speak(reply);
- question.value='';question.focus();
+function resizeInput(){
+ question.style.height='auto';
+ question.style.height=Math.min(question.scrollHeight,126)+'px';
 }
-form.addEventListener('submit',function(e){e.preventDefault();send(question.value)});
-document.querySelectorAll('[data-ask]').forEach(button=>button.addEventListener('click',()=>send(button.getAttribute('data-ask'))));
-$('clear').addEventListener('click',()=>{messages.replaceChildren();if('speechSynthesis' in window)speechSynthesis.cancel();add('bot','¡Hola de nuevo! 🤖 ¿Qué te gustaría saber de El Taconazo?')});
+let busy=false;
+async function send(text){
+ const clean=String(text||'').trim().slice(0,800);
+ if(!clean||busy)return;
+ const context=saved.slice(-12).map(m=>({role:m.role==='bot'?'assistant':'user',content:m.text.slice(0,800)}));
+ add('user',clean);
+ question.value='';resizeInput();
+ $('quick').classList.add('hidden');
+ if(!API_ENDPOINT){
+   const reply=answer(clean);add('bot',reply);speak(reply);return;
+ }
+ busy=true;$('send').disabled=true;$('mic').disabled=true;
+ const thinking=add('bot','Escribiendo…',false);
+ try{
+   const abort=new AbortController();
+   const timeout=setTimeout(()=>abort.abort(),28000);
+   let response;
+   try{
+     response=await fetch(API_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:clean,history:context}),signal:abort.signal});
+   }finally{clearTimeout(timeout)}
+   const data=await response.json();
+   if(!response.ok||typeof data.reply!=='string')throw new Error(data.error||'La IA no respondió.');
+   thinking.remove();
+   add('bot',data.reply);speak(data.reply);
+ }catch(e){
+   thinking.remove();
+   add('bot','⚠️ No pude conectarme con la IA. '+(e.name==='AbortError'?'La solicitud tardó demasiado.':(e.message||'Prueba de nuevo.'))+'\nPuedes volver a intentar tu pregunta.');
+ }finally{busy=false;$('send').disabled=false;$('mic').disabled=false;question.focus()}
+}
+form.addEventListener('submit',e=>{e.preventDefault();void send(question.value)});
+question.addEventListener('input',resizeInput);
+question.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229){e.preventDefault();void send(question.value)}});
+document.querySelectorAll('[data-ask]').forEach(button=>button.addEventListener('click',()=>{void send(button.getAttribute('data-ask'))}));
+$('clear').addEventListener('click',()=>{
+ if(!confirm('¿Borrar la conversación guardada en este dispositivo?'))return;
+ saved.length=0;messages.replaceChildren();persist();
+ if('speechSynthesis' in window)speechSynthesis.cancel();
+ add('bot','¡Aquí estoy! 🤖🌮 ¿En qué te ayudo?',true);
+ $('quick').classList.remove('hidden');$('menu').open=false;
+});
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(SpeechRecognition){
  const mic=$('mic');mic.hidden=false;
@@ -116,15 +200,25 @@ if(SpeechRecognition){
   try{
    const recognition=new SpeechRecognition();recognition.lang='es-MX';recognition.interimResults=false;recognition.maxAlternatives=1;
    mic.setAttribute('aria-pressed','true');
-   recognition.onresult=e=>{const recognized=e.results[0][0].transcript;send(recognized)};
-   recognition.onerror=()=>add('bot','No pude entender el dictado. Puedes escribir tu pregunta aquí abajo. 🎙️');
+   recognition.onresult=e=>{void send(e.results[0][0].transcript)};
+   recognition.onerror=()=>add('bot','No pude entender el dictado. Puedes escribir tu mensaje.');
    recognition.onend=()=>mic.setAttribute('aria-pressed','false');
    recognition.start();
-  }catch(e){mic.setAttribute('aria-pressed','false');add('bot','El micrófono no está disponible en este navegador. Puedes escribirme.')}
+  }catch(e){mic.setAttribute('aria-pressed','false');add('bot','El micrófono no está disponible en este navegador.')}
  });
 }
-if(!('speechSynthesis' in window)){$('talk').disabled=true;$('talk').parentElement.title='La lectura de voz no está disponible en este navegador'}
-add('bot','¡Qué onda! 🤖🌮 Soy TAQUIX, tu asistente de El Taconazo en Zacapu. ¿Buscas nuestros horarios, dónde estamos, pedir tacos o saber cómo ganar premios?');
+if(!('speechSynthesis' in window)){$('talk').disabled=true;$('talk').parentElement.title='Lectura en voz alta no disponible'}
+if(API_ENDPOINT){$('modeInfo').textContent='IA conectada';$('modeLabel').textContent='Conversación con inteligencia artificial'}
+else{$('modeInfo').textContent='IA pendiente';$('modeLabel').textContent='Respuestas sobre el negocio'}
+try{
+ const existing=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+ if(Array.isArray(existing))for(const item of existing.slice(-45)){
+   if(item&&['user','bot'].includes(item.role)&&typeof item.text==='string'&&item.text.length<3000)add(item.role,item.text,false);
+ }
+}catch(e){}
+if(saved.length===0&&messages.children.length===0)add('bot','¡Qué onda! 🤖🌮 Soy TAQUIX. Pregúntame por El Taconazo o cuéntame qué necesitas.');
+else if(messages.querySelector('.message.user'))$('quick').classList.add('hidden');
+resizeInput();
 })();
 </script>
 </body>
