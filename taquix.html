@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b121a">
-<meta name="description" content="Conoce a TAQUIX: tu asistente digital para horarios, ubicación, pedidos, premios y puntos de El Taconazo en Zacapu.">
-<title>TAQUIX 1.0 | El Taconazo</title>
+<meta name="description" content="Conoce a AZO: tu asistente digital para horarios, ubicación, pedidos, premios y puntos de El Taconazo en Zacapu.">
+<title>AZO 1.0 | El Taconazo</title>
 <style>
 :root{color-scheme:dark;--bg:#09111b;--panel:#122131;--line:#294557;--cyan:#78ecf9;--white:#f3f8fa;--muted:#b7c8d3;--orange:#ffad65}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -33,7 +33,7 @@ footer{text-align:center;color:#a5b8c4;font-size:12px;line-height:1.5}
 @media(max-width:450px){.identity{padding:6px 4px 15px}.bot{width:56px;height:56px;font-size:32px}.messages{max-height:52dvh}.chat{min-height:400px}}
 @media(prefers-reduced-motion:reduce){.messages{scroll-behavior:auto}}
 
-/* TAQUIX 1.1: interfaz cómoda, fluida y adaptada a pantallas pequeñas */
+/* AZO 1.1: interfaz cómoda, fluida y adaptada a pantallas pequeñas */
 body{height:100dvh;overflow:hidden}
 main{height:100dvh;max-width:860px;min-height:0;max-height:none;padding:10px clamp(10px,2.5vw,20px) max(10px,env(safe-area-inset-bottom));overflow:hidden}
 .top{margin:0 0 3px;justify-content:flex-start}.top a{font-size:12px;padding:6px 10px;border:0;background:transparent;color:#9fcad6}.top a:nth-child(2){display:none}
@@ -68,9 +68,9 @@ form button:disabled{opacity:.5;cursor:not-allowed}
 <body>
 <main>
 <nav class="top" aria-label="Navegación"><a href="./estrenos.html">← Volver a estrenos</a></nav>
-<header class="identity"><div class="bot" aria-hidden="true">🤖</div><div><h1>TAQUIX <span style="font-size:.34em;vertical-align:middle;color:var(--orange)">1.0</span></h1><p>Tu asistente del Taconazo, Zacapu</p><span class="live"><span class="dot"></span> Listo para responder</span></div></header>
+<header class="identity"><div class="bot" aria-hidden="true">🤖</div><div><h1>AZO <span style="font-size:.34em;vertical-align:middle;color:var(--orange)">1.0</span></h1><p>Tu asistente del Taconazo, Zacapu</p><span class="live"><span class="dot"></span> Listo para responder</span></div></header>
 <section class="chat" aria-label="Chat con TAQUIX">
-<div class="chathead"><div><strong>🤖 Conversación con TAQUIX</strong><small id="modeLabel">Respuestas del negocio</small></div>
+<div class="chathead"><div><strong>🤖 Conversación con AZO</strong><small id="modeLabel">Respuestas del negocio</small></div>
 <details class="menu" id="menu"><summary aria-label="Más opciones" title="Más opciones">⋯</summary>
 <div class="menu-panel">
 <a href="./index.html">🌮 El Taconazo Club</a>
@@ -106,6 +106,25 @@ function answer(raw){
  const t=normalize(raw);
  if(!t)return '¡Aquí estoy! 🌮 ¿Qué quieres saber de El Taconazo?';
  if(has(t,['transfer','regalar puntos','pasar puntos','mandar puntos']))return 'Por ahora los puntos de El Taconazo Club no se pueden transferir a otras personas. Cada quien conserva los de su propia tarjeta. 🌮';
+ // Datos de historia y sucursal del negocio, proporcionados por el equipo.
+ if(has(t,['hijo de ramon','hijo de jose ramon','hijo de paulina','hijo que','quien hizo los qr','quien hizo el qr','quien hizo azo','creador de azo','quien creo azo','quien creo el club','quien hizo los menus','menus qr'])){
+   return '💡 José Ramón Ríos Alvarado y Paulina Juárez Elías tienen un hijo que crea los menús QR, El Taconazo Club, AZO y otros proyectos digitales del negocio. No tengo confirmado su nombre, así que no lo voy a inventar.';
+ }
+ if(has(t,['fundador','fundadores','quien fundo','quien fund','quien creo el taconazo','quien empezo el taconazo','quienes iniciaron','quien lo fundo'])){
+   return '🌮 El Taconazo fue fundado en 2009 por José Manuel Ríos Arellano. En 2012 pasó a manos de su hijo José Ramón Ríos Alvarado y de Paulina Juárez Elías, su esposa, quienes continuaron la historia familiar.';
+ }
+ if(has(t,['historia','origen','desde cuando existe','cuando inicio','cuando empezo','cuando nacio','cuando se fundo','fecha de fundacion','cuantos anos tiene','ano 2009','ano 2012','septiembre de 2026','9 de septiembre','cuando abrio el local'])){
+   return '📖 El Taconazo existe desde 2009: lo fundó José Manuel Ríos Arellano. En 2012 continuaron el negocio José Ramón Ríos Alvarado y su esposa Paulina Juárez Elías. El local de Arriaga Rivera 1 abrió el 9 de septiembre de 2026. ¡Es una historia familiar que sigue creciendo!';
+ }
+ if(has(t,['tombero','sucursal','sucursales','otra taqueria','otro local'])){
+   return '📍 También existe la sucursal El Taconazo del Tombero, en avenida Tombero esquina con Ramón Aguilar, en Zacapu. El local principal está en Arriaga Rivera número 1, casi esquina con avenida Morelos. No tengo confirmado el horario específico de la sucursal del Tombero.';
+ }
+ if(has(t,['quienes trabajan','quienes son los integrantes','quien trabaja','equipo actual','personal actual','empleados actuales','integrantes de la taqueria','quienes atienden'])){
+   return '🧑‍🍳 El equipo actual de El Taconazo incluye a Atziri, Gaby, Regañao, Paulina, Ramón y Sami. ¡Entre todos mantienen viva la taquería!';
+ }
+ if(has(t,['jose manuel','jose ramon','paulina juarez','rios arellano','rios alvarado'])){
+   return '🌮 José Manuel Ríos Arellano fundó El Taconazo en 2009. En 2012 su hijo José Ramón Ríos Alvarado y su esposa Paulina Juárez Elías continuaron el negocio. Su hijo también crea proyectos digitales, como menús QR, El Taconazo Club y AZO.';
+ }
  if(has(t,['salud','alerg','gluten','vegano','vegetarian','sin carne','ingrediente']))return 'Para ingredientes, alérgenos o una preparación especial, consulta directamente al personal antes de pedir: 436 134 0982. No quiero inventarte información sobre la comida.';
  if(has(t,['precio','cuanto cuesta','cuanto vale','menu','carta','patitas','comida venden','que venden','platillos']))return '🌮 En El Taconazo tenemos tacos y también patitas de puerco. Para el menú completo y los precios actuales, escríbenos al 436 134 0982. Los premios del Club incluyen tacos, volcán, mulita, burrito, quesadilla, torta, gringa y empalmada.';
  if(has(t,['premio','recompens','canj','regalo','taco gratis','niveles']))return '🎁 Premios del Club:\n'+prizes.map(p=>'• '+p[0]+' — '+p[1]+' puntos').join('\n')+'\n\nLos puntos se descuentan cuando el encargado confirma el canje. Si quieres, también te explico cómo acumularlos.';
@@ -118,8 +137,8 @@ function answer(raw){
  if(has(t,['horario','hora abren','hora cierran','abierto','cierran','abren','cuando abren','hoy abren','dias']))return '🕕 Abrimos todos los días de 6:00 p. m. a 1:00 a. m. ¡Te esperamos en El Taconazo!';
  if(has(t,['ubic','direccion','donde estan','donde queda','llegar','local','zacapu','arriaga','morelos']))return '📍 Estamos en Arriaga Rivera número 1, casi esquina con avenida Morelos, en Zacapu, Michoacán. Puedes usar el botón «Cómo llegar» de esta página.';
  if(has(t,['telefono','llamar','numero','contacto','whatsapp','pedido','pedir','domicilio','envio','entrega']))return '📞 Para pedidos, contáctanos al 436 134 0982 (principal) o al 436 108 2946. Abrimos de 6:00 p. m. a 1:00 a. m. Si necesitas envío a domicilio, pregunta directamente si está disponible.';
- if(has(t,['quien eres','que eres','que haces','taquix','eres ia','inteligencia artificial']))return '🤖 ¡Soy TAQUIX! Tu asistente digital de El Taconazo. Puedo explicarte horarios, ubicación, pedidos y premios del Club. Por ahora respondo con información confirmada del negocio; todavía no tengo un modelo de IA generativa conectado.';
- if(has(t,['hola','buen dia','buenas','saludos','hey','que tal']))return '¡Quiúbole! 🤖🌮 Soy TAQUIX. Pregúntame dónde estamos, a qué hora abrimos, cómo pedir o cómo ganar premios.';
+ if(has(t,['quien eres','que eres','que haces','taquix','eres ia','inteligencia artificial']))return '🤖 ¡Soy AZO! Tu asistente digital de El Taconazo. Puedo explicarte horarios, ubicación, pedidos y premios del Club. Por ahora respondo con información confirmada del negocio; todavía no tengo un modelo de IA generativa conectado.';
+ if(has(t,['hola','buen dia','buenas','saludos','hey','que tal']))return '¡Quiúbole! 🤖🌮 Soy AZO. Pregúntame dónde estamos, a qué hora abrimos, cómo pedir o cómo ganar premios.';
  if(has(t,['gracias','adios','hasta luego']))return '¡Con gusto! 🌮 Aquí estaré cuando necesites algo del Taconazo. ¡Que tengas excelente día!';
  return '🤖 Me gusta tu pregunta, pero todavía no tengo ese dato confirmado. Puedo ayudarte con horarios, ubicación, pedidos, patitas de puerco, puntos y premios. Para más información llama al 436 134 0982.';
 }
@@ -216,7 +235,7 @@ try{
    if(item&&['user','bot'].includes(item.role)&&typeof item.text==='string'&&item.text.length<3000){saved.push({role:item.role,text:item.text});add(item.role,item.text,false);}
  }
 }catch(e){}
-if(saved.length===0&&messages.children.length===0)add('bot','¡Qué onda! 🤖🌮 Soy TAQUIX. Pregúntame por El Taconazo o cuéntame qué necesitas.');
+if(saved.length===0&&messages.children.length===0)add('bot','¡Qué onda! 🤖🌮 Soy AZO. Pregúntame por El Taconazo o cuéntame qué necesitas.');
 else if(messages.querySelector('.message.user'))$('quick').classList.add('hidden');
 resizeInput();
 })();
