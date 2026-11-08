@@ -63,6 +63,30 @@ form button:disabled{opacity:.5;cursor:not-allowed}
 .actions,footer{display:none!important}
 @media(max-width:450px){.identity{padding:0 4px 8px}.bot{width:40px;height:40px;font-size:23px}.chat{min-height:0}.messages{max-height:none;min-height:0;padding:12px 9px 8px}.message .bubble{font-size:14px}.message.user{max-width:88%}}
 @media(prefers-reduced-motion:reduce){.messages{scroll-behavior:auto}}
+
+/* AZO 1.2: el chat usa filas de rejilla para que las respuestas jamás se compriman a una columna */
+.chat,.messages{min-width:0;width:100%}
+.messages{display:flex;flex-direction:column;align-items:stretch}
+.message.bot{
+ display:grid!important;
+ grid-template-columns:26px minmax(0,1fr)!important;
+ column-gap:9px;
+ align-items:start;
+ width:100%!important;max-width:none!important;min-width:0;
+ flex:0 0 auto;
+}
+.message.bot .avatar{grid-column:1;grid-row:1;width:26px}
+.message.bot .bubble{
+ grid-column:2;grid-row:1;
+ display:block!important;box-sizing:border-box;
+ width:100%!important;max-width:none!important;min-width:0!important;
+ flex:none!important;margin:0;
+ white-space:pre-wrap!important;word-break:normal!important;overflow-wrap:break-word!important;
+ text-align:left;line-height:1.52;
+}
+.message.user{display:flex;align-self:flex-end;width:max-content;max-width:88%;min-width:0}
+.message.user .bubble{flex:0 1 auto;min-width:0;max-width:100%;overflow-wrap:break-word}
+
 </style>
 </head>
 <body>
