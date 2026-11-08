@@ -1,5 +1,5 @@
 /**
- * TAQUIX – Servidor seguro de IA para Cloudflare Workers.
+ * AZO – Servidor seguro de IA para Cloudflare Workers.
  * Pegar este archivo COMPLETO en el editor de un Worker.
  *
  * NO pegues tu clave OpenAI en este archivo.
@@ -16,6 +16,12 @@ const FACTS = [
   "Horario: todos los días de 6:00 p. m. a 1:00 a. m.",
   "Pedidos: 436 134 0982 (principal) y 436 108 2946.",
   "Además de tacos, El Taconazo vende patitas de puerco.",
+  "Historia: la taquería El Taconazo existe desde 2009. Fue fundada ese año por José Manuel Ríos Arellano.",
+  "En 2012 el negocio pasó a manos de su hijo José Ramón Ríos Alvarado y de su esposa Paulina Juárez Elías, quienes continuaron el proyecto familiar.",
+  "El local principal ubicado en Arriaga Rivera número 1 abrió el 9 de septiembre de 2026. No confundir esa fecha con el origen de la taquería, que es 2009.",
+  "El negocio también tiene una sucursal llamada El Taconazo del Tombero, ubicada en avenida Tombero esquina con Ramón Aguilar, Zacapu.",
+  "José Ramón Ríos Alvarado y Paulina Juárez Elías tienen un hijo que crea proyectos digitales para el negocio, como menús con código QR, El Taconazo Club y el asistente AZO. No se ha proporcionado el nombre del hijo: no inventarlo.",
+  "Integrantes actuales del equipo mencionados por el negocio: Atziri, Gaby, Regañao, Paulina, Ramón y Sami. No asumir que esta lista es permanente ni asignar funciones específicas sin confirmación.",
   "El Taconazo Club da 2 puntos por cada $50 de compra y 3 puntos extra en la primera compra del día.",
   "Premios: 1 taco 20 puntos; 1 volcán 26; 1 mulita 28; 1 burrito 40; 1 quesadilla 44; 1 torta 50; 1 gringa 50; 1 empalmada 50; 3 tacos 60; combo de 3 tacos + quesadilla + agua chica 120 puntos.",
   "La transferencia de puntos entre personas NO está disponible. Los premios y las reglas de acumulación se mantienen.",
@@ -78,7 +84,7 @@ export default {
       .map(x=>({role:x.role,content:x.content.slice(0,800)}));
     const conversation=[...history,{role:"user",content:message}];
     const instructions=[
-      "Eres TAQUIX, el asistente virtual amigable de El Taconazo de Zacapu, México.",
+      "Eres AZO, el asistente virtual amigable de El Taconazo de Zacapu, México.",
       "Habla en español mexicano natural y conversacional; responde con calidez, claridad y pocas palabras, como un chat moderno.",
       "Puedes conversar libremente sobre temas generales, no solo el negocio. Nunca finjas acceso a cuentas, herramientas, Internet o datos que no tengas.",
       "Usa los datos verificados cuando pregunten por el negocio. No inventes menú, precios, promociones, horarios diferentes ni servicios no confirmados.",
@@ -107,7 +113,7 @@ export default {
       });
       if(!upstream.ok){
         // Nunca reenviar errores crudos de OpenAI (pueden contener detalles internos).
-        return json({error:upstream.status===429?"TAQUIX está ocupado o se agotó el crédito de IA. Intenta más tarde.":"La IA no pudo responder. Comprueba el saldo y la configuración de OpenAI."},upstream.status===429?429:502);
+        return json({error:upstream.status===429?"AZO está ocupado o se agotó el crédito de IA. Intenta más tarde.":"La IA no pudo responder. Comprueba el saldo y la configuración de OpenAI."},upstream.status===429?429:502);
       }
       const result=await upstream.json();
       const output=(result.output||[])
