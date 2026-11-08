@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b121a">
+<meta name="description" content="Conoce a TAQUIX: tu asistente digital para horarios, ubicación, pedidos, premios y puntos de El Taconazo en Zacapu.">
+<title>TAQUIX 1.0 | El Taconazo</title>
+<style>
+:root{color-scheme:dark;--bg:#09111b;--panel:#122131;--line:#294557;--cyan:#78ecf9;--white:#f3f8fa;--muted:#b7c8d3;--orange:#ffad65}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+body{color:var(--white);background:radial-gradient(ellipse at 18% -10%,#1c5160 0%,transparent 44%),radial-gradient(ellipse at 100% 92%,#45301e 0%,transparent 40%),var(--bg)}
+body:before{content:"";pointer-events:none;position:fixed;inset:0;opacity:.10;background-image:linear-gradient(#b7ecff 1px,transparent 1px),linear-gradient(90deg,#b7ecff 1px,transparent 1px);background-size:44px 44px}
+a{color:var(--cyan)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+main{position:relative;margin:0 auto;max-width:800px;min-height:100dvh;display:flex;flex-direction:column;padding:16px clamp(12px,3vw,26px) 20px}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 14px}.top a{font-size:13px;text-decoration:none;padding:8px 11px;border:1px solid #527180;border-radius:10px;background:#142a38}
+.identity{display:flex;align-items:center;gap:15px;padding:10px 4px 22px}.bot{width:68px;height:68px;display:grid;place-items:center;font-size:39px;border:2px solid var(--cyan);border-radius:20px;background:linear-gradient(145deg,#22546c,#0d2435);box-shadow:0 0 30px #2be5fa45;flex:none}.identity h1{font-size:clamp(29px,7vw,42px);margin:0;font-weight:950;letter-spacing:.035em;color:var(--cyan)}.identity p{color:var(--muted);margin:2px 0;font-size:14px}.live{display:flex;align-items:center;gap:6px;color:#9aefc0;font-size:12px}.dot{height:8px;width:8px;border-radius:50%;background:#83f0b7;box-shadow:0 0 9px #83f0b7}
+.chat{display:flex;flex-direction:column;flex:1;background:#101d2bda;border:1px solid #375769;border-radius:22px;min-height:440px;overflow:hidden;box-shadow:0 16px 50px #0008}
+.chathead{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#162c3d;border-bottom:1px solid var(--line);padding:14px 16px}.chathead strong{font-size:14px}.chathead small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.chathead button{border:1px solid #547180;border-radius:9px;background:transparent;color:var(--white);font-size:13px;padding:7px 10px}
+.messages{flex:1;min-height:260px;max-height:56dvh;overflow-y:auto;padding:20px 15px 8px;display:flex;flex-direction:column;gap:15px;scroll-behavior:smooth}
+.message{display:flex;gap:9px;max-width:94%;align-items:flex-end}.message.user{align-self:flex-end;flex-direction:row-reverse}.avatar{width:26px;height:26px;border:1px solid #4e879a;border-radius:9px;background:#163747;display:grid;place-items:center;flex:none;font-size:14px}.bubble{background:#1c3545;border:1px solid #426477;color:#eef8fc;padding:11px 14px;border-radius:16px 16px 16px 4px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.47;font-size:14px}.user .bubble{background:#315a62;border:1px solid #4d9c9d;border-radius:16px 16px 4px 16px}.user .avatar{background:#34434a}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:14px 13px 10px;scrollbar-width:thin}.quick button{flex:none;border:1px solid #42768d;border-radius:99px;background:#19394b;color:#e5fcff;padding:9px 13px;font-size:13px}.quick button:active{background:#26718a}
+form{display:flex;gap:8px;padding:11px 12px 13px;background:#142637;border-top:1px solid var(--line)}
+form input{width:100%;min-width:0;border:1px solid #466a7d;border-radius:12px;background:#0c1a28;color:#fff;padding:12px;font-size:15px}form input::placeholder{color:#b5c6ce}
+form button{min-width:48px;border:0;border-radius:12px;background:var(--cyan);color:#05232a;font-weight:900;padding:0 15px}
+form button#mic{background:#26465b;color:#fff;border:1px solid #4c829b;font-size:19px}form button#mic[hidden]{display:none}
+#mic[aria-pressed="true"]{background:#8e3c3c}
+.lower{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 15px 15px;border-top:1px solid #294557;color:var(--muted);font-size:12px}
+.lower label{display:flex;align-items:center;gap:6px}.lower input{accent-color:var(--cyan)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:15px 0}.actions a{text-decoration:none;background:#183c4b;border:1px solid #4c8499;padding:10px 13px;border-radius:12px;font-size:13px;font-weight:750}.actions a.whatsapp{background:#124e3a;border-color:#38a982;color:#e6fff2}
+footer{text-align:center;color:#a5b8c4;font-size:12px;line-height:1.5}
+@media(max-width:450px){.identity{padding:6px 4px 15px}.bot{width:56px;height:56px;font-size:32px}.messages{max-height:52dvh}.chat{min-height:400px}}
+@media(prefers-reduced-motion:reduce){.messages{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main>
+<nav class="top" aria-label="Navegación"><a href="./estrenos.html">← Estrenos</a><a href="./index.html">🌮 El Taconazo Club</a></nav>
+<header class="identity"><div class="bot" aria-hidden="true">🤖</div><div><h1>TAQUIX <span style="font-size:.34em;vertical-align:middle;color:var(--orange)">1.0</span></h1><p>Tu asistente del Taconazo, Zacapu</p><span class="live"><span class="dot"></span> Listo para responder</span></div></header>
+<section class="chat" aria-label="Chat con TAQUIX">
+<div class="chathead"><div><strong>💬 Habla con TAQUIX</strong><small>Horarios · Pedidos · Ubicación · Premios</small></div><button id="clear" type="button">Borrar chat</button></div>
+<div class="messages" id="messages" role="log" aria-live="polite" aria-label="Mensajes de la conversación"></div>
+<div class="quick" aria-label="Preguntas frecuentes">
+<button type="button" data-ask="¿Dónde están ubicados?">📍 Ubicación</button>
+<button type="button" data-ask="¿Cuál es el horario?">🕕 Horarios</button>
+<button type="button" data-ask="¿Cómo pido tacos?">🌮 Pedidos</button>
+<button type="button" data-ask="¿Cómo gano puntos?">⭐ Puntos</button>
+<button type="button" data-ask="¿Qué premios hay?">🎁 Premios</button>
+</div>
+<form id="form" autocomplete="off">
+<input id="question" aria-label="Escribe tu pregunta" placeholder="Pregúntame lo que quieras del Taconazo…" maxlength="500" required>
+<button id="mic" type="button" aria-label="Dictar pregunta con la voz" title="Dictar pregunta" hidden>🎙️</button>
+<button type="submit" aria-label="Enviar mensaje">➤</button>
+</form>
+<div class="lower"><span>🔒 No tengo acceso a tu cuenta ni a tus puntos personales.</span><label><input type="checkbox" id="talk"> Leer respuestas en voz alta</label></div>
+</section>
+<div class="actions">
+<a class="whatsapp" href="https://wa.me/524361340982" target="_blank" rel="noopener noreferrer">💬 Pedidos por WhatsApp</a>
+<a href="./index.html">🎟️ Mi tarjeta digital</a>
+<a href="https://www.google.com/maps/search/?api=1&query=Arriaga+Rivera+1+Zacapu+Michoacan" target="_blank" rel="noopener noreferrer">🗺️ Cómo llegar</a>
+</div>
+<footer>TAQUIX responde con información del negocio; esta versión aún no tiene IA generativa conectada.<br>Si algo no está confirmado, consulta directamente a El Taconazo.</footer>
+</main>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const messages=$('messages'),form=$('form'),question=$('question');
+const prizes=[['1 taco',20],['1 volcán',26],['1 mulita',28],['1 burrito',40],['1 quesadilla',44],['1 torta',50],['1 gringa',50],['1 empalmada',50],['3 tacos',60],['Combo de 3 tacos, quesadilla y agua chica',120]];
+const normalize=text=>String(text).toLocaleLowerCase('es-MX').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[¿?¡!.,;:()[\]]/g,' ').replace(/\s+/g,' ').trim();
+const has=(text,words)=>words.some(word=>text.includes(word));
+function answer(raw){
+ const t=normalize(raw);
+ if(!t)return '¡Aquí estoy! 🌮 ¿Qué quieres saber de El Taconazo?';
+ if(has(t,['transfer','regalar puntos','pasar puntos','mandar puntos']))return 'Por ahora los puntos de El Taconazo Club no se pueden transferir a otras personas. Cada quien conserva los de su propia tarjeta. 🌮';
+ if(has(t,['salud','alerg','gluten','vegano','vegetarian','sin carne','ingrediente']))return 'Para ingredientes, alérgenos o una preparación especial, consulta directamente al personal antes de pedir: 436 134 0982. No quiero inventarte información sobre la comida.';
+ if(has(t,['precio','cuanto cuesta','cuanto vale','menu','carta','patitas','comida venden','que venden','platillos']))return '🌮 En El Taconazo tenemos tacos y también patitas de puerco. Para el menú completo y los precios actuales, escríbenos al 436 134 0982. Los premios del Club incluyen tacos, volcán, mulita, burrito, quesadilla, torta, gringa y empalmada.';
+ if(has(t,['premio','recompens','canj','regalo','taco gratis','niveles']))return '🎁 Premios del Club:\n'+prizes.map(p=>'• '+p[0]+' — '+p[1]+' puntos').join('\n')+'\n\nLos puntos se descuentan cuando el encargado confirma el canje. Si quieres, también te explico cómo acumularlos.';
+ if(has(t,['puntos tengo','mis puntos','saldo','tarjeta','mi cuenta','iniciar sesion','registrar','registro','unirme','club','empleados'])) {
+  if(has(t,['mis puntos','saldo','puntos tengo']))return 'No puedo ver tu saldo personal. Abre tu tarjeta digital en El Taconazo Club para consultar tus puntos: https://er8213222-code.github.io/El-Taconazo-Club/ 🌮';
+  if(has(t,['empleados']))return 'Tenemos un distintivo especial llamado 🧑‍🍳 Equipo El Taconazo. Lo asigna el encargado; no cambia automáticamente los puntos ni da permisos administrativos.';
+  return '🌮 En El Taconazo Club tienes una tarjeta digital para consultar puntos, rangos y premios. Puedes crear tu cuenta desde la página del Club. Si ya te registraron en la taquería, el encargado puede ayudarte a vincular tus puntos después de verificar tu identidad: https://er8213222-code.github.io/El-Taconazo-Club/';
+ }
+ if(has(t,['punto','acumula','ganar','bono','compra','cada 50','primera compra']))return '⭐ Ganas 2 puntos por cada $50 de compra. Además, la primera compra de cada día te da 3 puntos extra. Por ejemplo, cuatro compras de $50 en cuatro días distintos suman 20 puntos. Los canjes se registran con el encargado.';
+ if(has(t,['horario','hora abren','hora cierran','abierto','cierran','abren','cuando abren','hoy abren','dias']))return '🕕 Abrimos todos los días de 6:00 p. m. a 1:00 a. m. ¡Te esperamos en El Taconazo!';
+ if(has(t,['ubic','direccion','donde estan','donde queda','llegar','local','zacapu','arriaga','morelos']))return '📍 Estamos en Arriaga Rivera número 1, casi esquina con avenida Morelos, en Zacapu, Michoacán. Puedes usar el botón «Cómo llegar» de esta página.';
+ if(has(t,['telefono','llamar','numero','contacto','whatsapp','pedido','pedir','domicilio','envio','entrega']))return '📞 Para pedidos, contáctanos al 436 134 0982 (principal) o al 436 108 2946. Abrimos de 6:00 p. m. a 1:00 a. m. Si necesitas envío a domicilio, pregunta directamente si está disponible.';
+ if(has(t,['quien eres','que eres','que haces','taquix','eres ia','inteligencia artificial']))return '🤖 ¡Soy TAQUIX! Tu asistente digital de El Taconazo. Puedo explicarte horarios, ubicación, pedidos y premios del Club. Por ahora respondo con información confirmada del negocio; todavía no tengo un modelo de IA generativa conectado.';
+ if(has(t,['hola','buen dia','buenas','saludos','hey','que tal']))return '¡Quiúbole! 🤖🌮 Soy TAQUIX. Pregúntame dónde estamos, a qué hora abrimos, cómo pedir o cómo ganar premios.';
+ if(has(t,['gracias','adios','hasta luego']))return '¡Con gusto! 🌮 Aquí estaré cuando necesites algo del Taconazo. ¡Que tengas excelente día!';
+ return '🤖 Me gusta tu pregunta, pero todavía no tengo ese dato confirmado. Puedo ayudarte con horarios, ubicación, pedidos, patitas de puerco, puntos y premios. Para más información llama al 436 134 0982.';
+}
+function add(role,text){
+ const row=document.createElement('div');row.className='message '+role;
+ const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=role==='bot'?'🤖':'👤';avatar.setAttribute('aria-hidden','true');
+ const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;
+ row.append(avatar,bubble);messages.append(row);messages.scrollTop=messages.scrollHeight;
+}
+function speak(text){
+ if(!$('talk').checked||!('speechSynthesis' in window))return;
+ try{speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='es-MX';utterance.rate=1;utterance.pitch=1; speechSynthesis.speak(utterance)}catch(e){}
+}
+function send(text){
+ const clean=String(text||'').trim().slice(0,500);if(!clean)return;
+ add('user',clean);const reply=answer(clean);add('bot',reply);speak(reply);
+ question.value='';question.focus();
+}
+form.addEventListener('submit',function(e){e.preventDefault();send(question.value)});
+document.querySelectorAll('[data-ask]').forEach(button=>button.addEventListener('click',()=>send(button.getAttribute('data-ask'))));
+$('clear').addEventListener('click',()=>{messages.replaceChildren();if('speechSynthesis' in window)speechSynthesis.cancel();add('bot','¡Hola de nuevo! 🤖 ¿Qué te gustaría saber de El Taconazo?')});
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SpeechRecognition){
+ const mic=$('mic');mic.hidden=false;
+ mic.addEventListener('click',()=>{
+  try{
+   const recognition=new SpeechRecognition();recognition.lang='es-MX';recognition.interimResults=false;recognition.maxAlternatives=1;
+   mic.setAttribute('aria-pressed','true');
+   recognition.onresult=e=>{const recognized=e.results[0][0].transcript;send(recognized)};
+   recognition.onerror=()=>add('bot','No pude entender el dictado. Puedes escribir tu pregunta aquí abajo. 🎙️');
+   recognition.onend=()=>mic.setAttribute('aria-pressed','false');
+   recognition.start();
+  }catch(e){mic.setAttribute('aria-pressed','false');add('bot','El micrófono no está disponible en este navegador. Puedes escribirme.')}
+ });
+}
+if(!('speechSynthesis' in window)){$('talk').disabled=true;$('talk').parentElement.title='La lectura de voz no está disponible en este navegador'}
+add('bot','¡Qué onda! 🤖🌮 Soy TAQUIX, tu asistente de El Taconazo en Zacapu. ¿Buscas nuestros horarios, dónde estamos, pedir tacos o saber cómo ganar premios?');
+})();
+</script>
+</body>
+</html>
