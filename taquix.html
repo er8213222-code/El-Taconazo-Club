@@ -222,9 +222,9 @@ function speak(text){
  try{
   stopSpeaking();
   const u=new SpeechSynthesisUtterance(clean);
-  u.lang='es-MX';u.rate=0.95;u.pitch=0.72;u.volume=1;
-  // El motor nativo del teléfono determina el timbre; con estos ajustes
-  // la entonación suena más sintética sin añadir servicios de voz.
+  u.lang='es-MX';u.rate=1.0;u.pitch=1.0;u.volume=1;
+  // Voz provisional del navegador: timbre natural por defecto; la voz avanzada de AZO
+  // será otra función opcional de Realtime cuando esté habilitada con seguridad.
   const voices=speechSynthesis.getVoices();
   u.voice=voices.find(v=>v.lang.toLowerCase()==='es-mx')||voices.find(v=>v.lang.toLowerCase().startsWith('es'))||null;
   speechSynthesis.speak(u);
