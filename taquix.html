@@ -109,7 +109,7 @@ form button[type="submit"]{background:#e54867!important;color:white!important;bo
 <a href="https://www.google.com/maps/search/?api=1&amp;query=Arriaga+Rivera+1+Zacapu+Michoacan" target="_blank" rel="noopener noreferrer">📍 Cómo llegar</a>
 <label><input type="checkbox" id="talk"> 🔊 Leer respuestas en voz alta</label>
 <button id="clear" type="button">🗑️ Borrar conversación</button>
-<p>Historial guardado en este dispositivo. No compartas contraseñas ni datos bancarios.</p>
+<p><span id="historyStatus" role="status" aria-live="polite">Comprobando almacenamiento…</span> No compartas contraseñas ni datos bancarios.</p>
 </div></details></div>
 <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Mensajes de la conversación"></div>
 <div class="quick" id="quick" aria-label="Preguntas rápidas">
@@ -179,7 +179,15 @@ const API_ENDPOINT = '';
 const STORAGE_KEY = 'taquix-conversacion-v1';
 const saved=[];
 function persist(){
- try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved.slice(-45)))}catch(e){}
+ const status=document.getElementById('historyStatus');
+ try{
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(saved.slice(-45)));
+  if(status)status.textContent='Historial guardado en este dispositivo.';
+  return true;
+ }catch(e){
+  if(status)status.textContent='Historial sin guardar: el navegador bloqueó el almacenamiento.';
+  return false;
+ }
 }
 function save(role,text){
  saved.push({role,text:String(text).slice(0,2600)});
@@ -314,6 +322,7 @@ try{
 }catch(e){}
 if(saved.length===0&&messages.children.length===0)add('bot','¡Qué onda! 🤖🌮 Soy AZO. Pregúntame por El Taconazo o cuéntame qué necesitas.');
 else if(messages.querySelector('.message.user'))$('quick').classList.add('hidden');
+persist();
 resizeInput();
 })();
 </script>
