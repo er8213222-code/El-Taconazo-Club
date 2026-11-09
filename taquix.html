@@ -124,6 +124,27 @@ body{background:radial-gradient(ellipse at 0% 0%,#174a91 0%,transparent 47%),rad
 .message.user .avatar{background:#25477b;border-color:#578ac9}
 form button#send{background:#e6496b;color:#fff}
 .quick button{background:#213f72;border-color:#5685c6}
+
+/* AZO 1.5: invertir jerarquía — rojo principal y azul de acento */
+:root{--bg:#1a0812;--panel:#321523;--line:#8d3e56;--cyan:#ff8aa4;--orange:#69b9ff}
+body{background:radial-gradient(ellipse at 0% 0%,#8d2447 0%,transparent 48%),radial-gradient(ellipse at 100% 100%,#5e1c38 0%,transparent 46%),#1a0812}
+body:before{background-image:linear-gradient(#dc6e8d 1px,transparent 1px),linear-gradient(90deg,#dc6e8d 1px,transparent 1px)}
+.identity h1{color:#ff8aa4}
+.bot{border-color:#ed5d7e;background:linear-gradient(140deg,#ac3154,#4e1839);box-shadow:0 0 22px #e0446755}
+.chat{background:#2b1323f5;border-color:#8a3e59}
+.chathead{background:#421b30;border-color:#8a3e59}
+.chathead .menu>summary{background:#63243d;border-color:#aa4d6b}
+.menu .menu-panel{background:#3a1a2d;border-color:#a84c6b}
+.message.bot .bubble{background:#4a2035;border-color:#93415f;color:#fff1f5}
+.message.user .bubble{background:#a33052;border-color:#d46b85;color:#fff}
+.message .avatar{background:#57253e;border-color:#a44a67}
+.message.user .avatar{background:#762943;border-color:#d46b85}
+.quick button{background:#63283f;border-color:#ac526e;color:#fff1f5}
+form{background:#3a1b2d;border-color:#8a3e59}
+form textarea{background:#211222;border-color:#8a4865}
+form button#send{background:#4f9de9;color:#fff}
+form button#mic{background:#672840;color:#fff}
+.actions a{background:#63283f;border-color:#ac526e}
 </style>
 </head>
 <body>
