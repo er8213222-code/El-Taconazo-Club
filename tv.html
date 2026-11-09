@@ -213,41 +213,5 @@ button.tt-liked{color:#ff5973!important}
  document.querySelectorAll(".tt-dialog").forEach(d=>d.addEventListener("click",e=>{if(e.target===d)d.close()}));
  if(location.hash==="#tactok")setTimeout(()=>videos[0]?.play().catch(()=>{}),500);
 })();
-</script><!-- EMILIANO-STUDIOS-CLUB-TV-PRANK-V2 -->
-<style id="emiliano-prank-style">
-html.emiliano-prank-lock,html.emiliano-prank-lock body{overflow:hidden!important;overscroll-behavior:none!important}
-body.emiliano-prank-body>*:not(#emiliano-prank-screen){filter:blur(3px) brightness(.35)!important;pointer-events:none!important}
-#emiliano-prank-screen{position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;padding:20px!important;box-sizing:border-box!important;background:rgba(0,0,0,.6)!important;color:#fff!important;font-family:Arial,Helvetica,sans-serif!important;text-align:center!important}
-#emiliano-prank-screen *{box-sizing:border-box}
-#emiliano-prank-screen .em-panel{width:min(100%,590px);border:1px solid #e62c36;border-radius:22px;padding:34px 23px;background:linear-gradient(145deg,#240809f5,#09090cf7);box-shadow:0 0 75px #ef233c44}
-#emiliano-prank-screen .em-brand{font-size:12px;font-weight:900;letter-spacing:4px;color:#ff626b}
-#emiliano-prank-screen h1{font-size:clamp(29px,7vw,52px);line-height:1.05;margin:20px 0 14px;letter-spacing:1px}
-#emiliano-prank-screen .em-sub{font-size:15px;color:#ddd;line-height:1.6;margin:15px 0 22px}
-#emiliano-prank-screen button{border:0;border-radius:13px;background:#dc182c;color:white;padding:16px 45px;font-weight:900;font-size:22px;cursor:pointer;box-shadow:0 5px 24px #d21c3866}
-#emiliano-prank-screen .em-message{display:none;margin-top:23px;font-size:18px;line-height:1.55;color:#fff}
-#emiliano-prank-screen .em-message.show{display:block}
-#emiliano-prank-screen .em-warning{font-size:12px;color:#ff6973;margin-top:20px}
-</style>
-<script>
-(function(){
-if(window.__emilianoClubPrankV2)return;window.__emilianoClubPrankV2=true;
-var isTV=location.pathname.toLowerCase().endsWith('/tv.html');
-var brand=isTV?'EL TACONAZO TV':'EL TACONAZO CLUB';
-function boot(){
-if(document.getElementById('emiliano-prank-screen'))return;
-document.documentElement.classList.add('emiliano-prank-lock');
-document.body.classList.add('emiliano-prank-body');
-var el=document.createElement('div');el.id='emiliano-prank-screen';el.innerHTML='<section class="em-panel"><div class="em-brand">EMILIANO STUDIOS ®</div><h1>'+brand+'</h1><p class="em-sub">'+(isTV?'Accede a la experiencia de cine.':'Bienvenido al Club. Presiona para entrar.')+'</p><button type="button" id="emiliano-prank-enter">ENTRAR</button><div class="em-message" id="emiliano-prank-message">Hemos hackeado los servidores y códigos de Emiliano Studios. Esto volverá a la normalidad cuando él se dé cuenta.</div><div class="em-warning" id="emiliano-prank-warning"></div></section>';
-document.body.appendChild(el);
-var btn=document.getElementById('emiliano-prank-enter');
-btn.addEventListener('click',function(){btn.textContent='TACONAZO TV';btn.disabled=true;document.getElementById('emiliano-prank-message').classList.add('show');var audio=new Audio('./alerta-emiliano.mp4');audio.loop=true;audio.volume=1;window.__emilianoPrankAudio=audio;audio.play().catch(function(){document.getElementById('emiliano-prank-warning').textContent='Pulsa de nuevo para activar el sonido.'})});
-}
-document.addEventListener('click',function(e){if(!e.target.closest('#emiliano-prank-screen')){e.preventDefault();e.stopImmediatePropagation()}},true);
-document.addEventListener('submit',function(e){e.preventDefault();e.stopImmediatePropagation()},true);
-document.addEventListener('wheel',function(e){e.preventDefault()},{capture:true,passive:false});
-document.addEventListener('touchmove',function(e){e.preventDefault()},{capture:true,passive:false});
-document.addEventListener('keydown',function(e){if(['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key))e.preventDefault()},true);
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-})();
 </script>
 </body></html>
