@@ -38,9 +38,26 @@ main{max-width:980px;margin:0 auto;padding:0 18px 36px}
 .fresh{font-size:clamp(5px,.8vw,7px);font-weight:800;letter-spacing:.1em;color:#57514a;line-height:1.1}
 .fresh small{display:block;font-size:.82em;font-weight:600;letter-spacing:.08em;color:#8a8178;margin-top:2px}
 .card-index{font-size:11px;color:#777;margin:10px 2px 0}
-.scanned{max-width:480px;margin:8vh auto;padding:0 18px}
-.scanned .card{aspect-ratio:85.6/54;max-width:480px;margin:auto}
-.scanned-note{text-align:center;color:#5d5d5d;font-size:13px;line-height:1.55;margin:18px auto 0;max-width:390px}
+.scanned{max-width:620px;margin:0 auto;padding:clamp(34px,9vh,86px) 20px 48px}
+.scan-heading{display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.scan-brand-mark{width:42px;height:42px;border:2px solid var(--red);border-radius:13px;display:grid;place-items:center;color:var(--red);font-size:18px;font-weight:900}
+.scan-brand-name{font-size:15px;font-weight:900;letter-spacing:.12em}
+.scan-brand-sub{font-size:10px;color:#777;letter-spacing:.18em;margin-top:4px}
+.scan-content{padding:0 2px}
+.scan-kicker{font-size:11px;font-weight:800;letter-spacing:.16em;color:#777;text-transform:uppercase}
+.scan-state{display:inline-flex;align-items:center;gap:7px;margin-top:22px;padding:7px 11px;border-radius:999px;background:#f8f0dc;color:#725515;font-size:11px;font-weight:800;letter-spacing:.06em}
+.scan-state-dot{width:7px;height:7px;border-radius:50%;background:#d0a323}
+.scan-number-label{margin-top:30px;font-size:11px;color:#777;font-weight:800;letter-spacing:.18em}
+.scan-number{font-size:clamp(54px,13vw,82px);line-height:.98;font-weight:900;letter-spacing:.015em;color:var(--red);font-variant-numeric:tabular-nums;margin-top:8px}
+.scan-divider{height:1px;background:#e7e2dc;margin:27px 0 22px}
+.scan-name-label{font-size:10px;color:#777;font-weight:800;letter-spacing:.17em}
+.scan-name{font-size:clamp(20px,5vw,27px);font-weight:800;line-height:1.2;margin-top:8px;overflow-wrap:anywhere}
+.scan-message{font-size:14px;line-height:1.65;color:#626262;margin-top:15px;max-width:480px}
+.scan-footer{display:flex;align-items:center;gap:9px;margin-top:34px}
+.scan-shield{width:23px;height:26px;flex:0 0 auto}
+.scan-fresh{font-size:10px;font-weight:800;letter-spacing:.1em;color:#61584e;line-height:1.15}
+.scan-fresh small{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;color:#8a8178;margin-top:3px}
+.scan-accent{height:5px;width:94px;border-radius:99px;background:linear-gradient(90deg,var(--red) 0 58%,var(--yellow) 58%);margin-top:36px}
 .hidden{display:none!important}
 @media(max-width:520px){.toolbar{align-items:flex-start}.toolbar h1{font-size:15px}.toolbar p{max-width:230px}.card-shell{padding:9px}.cards{grid-template-columns:1fr}}
 @media print{
@@ -79,12 +96,25 @@ main{max-width:980px;margin:0 auto;padding:0 18px 36px}
   </div><div class="card-index">Tarjeta física · Socio 0003</div></article>
  </section>
  <section id="scanView" class="scanned hidden">
-  <div class="card" id="scannedCard">
-   <div class="brand"><div class="brand-mark">T</div><div class="brand-name">EL TACONAZO<span>CLUB</span></div></div>
-   <div class="card-main"><div class="member"><div class="eyebrow">IDENTIFICACIÓN DE SOCIO</div><div class="member-label">SOCIO</div><div class="member-number" id="scanNumber">0001</div><div class="member-name" id="scanName"></div></div></div>
-   <div class="card-foot"><svg class="shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div></div>
+  <header class="scan-heading">
+   <div class="scan-brand-mark">T</div>
+   <div><div class="scan-brand-name">EL TACONAZO CLUB</div><div class="scan-brand-sub">IDENTIFICACIÓN DE SOCIO</div></div>
+  </header>
+  <div class="scan-content">
+   <div class="scan-kicker">Tu tarjeta física fue reconocida</div>
+   <div class="scan-state" id="scanState"><span class="scan-state-dot"></span><span id="scanStateText">TARJETA IDENTIFICADA</span></div>
+   <div class="scan-number-label">NÚMERO DE SOCIO</div>
+   <div class="scan-number" id="scanNumber">0001</div>
+   <div class="scan-divider"></div>
+   <div class="scan-name-label">TITULAR</div>
+   <div class="scan-name" id="scanName">Pendiente de asignar</div>
+   <p class="scan-message" id="scanMessage">Esta pantalla identifica el número de tu tarjeta física.</p>
+   <div class="scan-footer">
+    <svg class="scan-shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="scan-fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div>
+   </div>
+   <div class="scan-accent"></div>
   </div>
-  <p class="scanned-note" id="scanMessage">Esta es la identificación de tu tarjeta física de El Taconazo Club.</p>
  </section>
  <p class="screen-only" id="qrError" style="text-align:center;color:#8b2635;font-size:12px"></p>
 </main>
@@ -106,15 +136,17 @@ if(socio){
  document.getElementById("printView").classList.add("hidden");
  document.getElementById("scanView").classList.remove("hidden");
  if(!id){
-  document.getElementById("scanMessage").textContent="No encontramos ese número de tarjeta. Verifica el QR con el establecimiento.";
+  document.getElementById("scanStateText").textContent="TARJETA NO ENCONTRADA";
   document.getElementById("scanNumber").textContent="----";
+  document.getElementById("scanName").textContent="No disponible";
+  document.getElementById("scanMessage").textContent="No encontramos este número de socio. Revisa el código QR o consulta al personal de El Taconazo.";
  }else{
   document.getElementById("scanNumber").textContent=id;
   const name=SOCIOS[id].trim();
-  document.getElementById("scanName").textContent=name;
+  document.getElementById("scanName").textContent=name||"Pendiente de asignar";
   document.getElementById("scanMessage").textContent=name
-   ?"Esta tarjeta física está identificada a nombre de "+name+"."
-   :"Esta tarjeta física corresponde al socio "+id+". El nombre se asignará cuando el establecimiento registre al titular.";
+   ?"Esta tarjeta física está asignada a "+name+". Conserva este número de socio para identificar tu tarjeta."
+   :"Esta tarjeta física corresponde al socio "+id+". El nombre del titular se agregará cuando el establecimiento lo asigne.";
  }
 }else{
  if(typeof QRCode==="undefined"){
