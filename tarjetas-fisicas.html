@@ -45,8 +45,16 @@ main{max-width:980px;margin:0 auto;padding:0 18px 36px}
 .scan-brand-sub{font-size:10px;color:#777;letter-spacing:.18em;margin-top:4px}
 .scan-content{padding:0 2px}
 .scan-kicker{font-size:11px;font-weight:800;letter-spacing:.16em;color:#777;text-transform:uppercase}
-.scan-state{display:inline-flex;align-items:center;gap:7px;margin-top:22px;padding:7px 11px;border-radius:999px;background:#f8f0dc;color:#725515;font-size:11px;font-weight:800;letter-spacing:.06em}
-.scan-state-dot{width:7px;height:7px;border-radius:50%;background:#d0a323}
+.scan-state{display:inline-flex;align-items:center;gap:7px;margin-top:22px;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.06em}
+.scan-state-dot{width:7px;height:7px;border-radius:50%}
+.scan-state.is-red{background:#fde8e8;color:#a51f2d}
+.scan-state.is-red .scan-state-dot{background:#c52d3b}
+.scan-state.is-orange{background:#fff0db;color:#a75b08}
+.scan-state.is-orange .scan-state-dot{background:#e58a19;animation:scanPulse 1s infinite}
+.scan-state.is-green{background:#e5f6eb;color:#187544}
+.scan-state.is-green .scan-state-dot{background:#239b5a}
+@keyframes scanPulse{50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.scan-state.is-orange .scan-state-dot{animation:none}}
 .scan-number-label{margin-top:30px;font-size:11px;color:#777;font-weight:800;letter-spacing:.18em}
 .scan-number{font-size:clamp(54px,13vw,82px);line-height:.98;font-weight:900;letter-spacing:.015em;color:var(--red);font-variant-numeric:tabular-nums;margin-top:8px}
 .scan-divider{height:1px;background:#e7e2dc;margin:27px 0 22px}
@@ -132,21 +140,35 @@ const params=new URLSearchParams(location.search);
 const socio=params.get("socio");
 if(socio){
  const id=ids.includes(socio)?socio:null;
+ const state=document.getElementById("scanState");
+ const stateText=document.getElementById("scanStateText");
+ const requestedState=params.get("estado");
  document.getElementById("toolbar").classList.add("hidden");
  document.getElementById("printView").classList.add("hidden");
  document.getElementById("scanView").classList.remove("hidden");
  if(!id){
-  document.getElementById("scanStateText").textContent="TARJETA NO ENCONTRADA";
+  state.className="scan-state is-red";
+  stateText.textContent="TARJETA NO IDENTIFICADA";
   document.getElementById("scanNumber").textContent="----";
   document.getElementById("scanName").textContent="No disponible";
   document.getElementById("scanMessage").textContent="No encontramos este número de socio. Revisa el código QR o consulta al personal de El Taconazo.";
  }else{
   document.getElementById("scanNumber").textContent=id;
   const name=SOCIOS[id].trim();
+  if(requestedState==="actualizando"){
+   state.className="scan-state is-orange";
+   stateText.textContent="ACTUALIZANDO PUNTOS";
+   document.getElementById("scanMessage").textContent="Estamos actualizando la información de tus puntos. Espera un momento y vuelve a consultar.";
+  }else if(name){
+   state.className="scan-state is-green";
+   stateText.textContent="TARJETA RECONOCIDA";
+   document.getElementById("scanMessage").textContent="Esta tarjeta física está asignada a "+name+". Conserva este número de socio para identificar tu tarjeta.";
+  }else{
+   state.className="scan-state is-red";
+   stateText.textContent="TARJETA NO IDENTIFICADA";
+   document.getElementById("scanMessage").textContent="Esta tarjeta física corresponde al socio "+id+", pero todavía no tiene un titular asignado. Consulta al personal de El Taconazo.";
+  }
   document.getElementById("scanName").textContent=name||"Pendiente de asignar";
-  document.getElementById("scanMessage").textContent=name
-   ?"Esta tarjeta física está asignada a "+name+". Conserva este número de socio para identificar tu tarjeta."
-   :"Esta tarjeta física corresponde al socio "+id+". El nombre del titular se agregará cuando el establecimiento lo asigne.";
  }
 }else{
  if(typeof QRCode==="undefined"){
