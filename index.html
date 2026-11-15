@@ -312,13 +312,13 @@ $('noticeForm').addEventListener('submit',event=>{
  if(customerName.length<3||customerName==='Cliente'){setStatus('noticeStatus','No se pudo leer tu nombre. Actualiza tu tarjeta e intenta otra vez.');return;}
  const isTable=noticeType.value==='mesa';
  const tableText=$('noticeTable').value.trim();
- const takeaway=$('noticeTakeawayName').value.trim().replace(/\\s+/g,' ');
- if(isTable&&(!/^\\d{1,3}$/.test(tableText)||Number(tableText)<1)){setStatus('noticeStatus','Escribe un número de mesa válido.');return;}
+ const takeaway=$('noticeTakeawayName').value.trim().replace(/\s+/g,' ');
+ if(isTable&&(!/^\d{1,3}$/.test(tableText)||Number(tableText)<1)){setStatus('noticeStatus','Escribe un número de mesa válido.');return;}
  if(!isTable&&takeaway.length<2){setStatus('noticeStatus','Escribe el nombre con el que el personal registró tu pedido.');return;}
  const now=new Date();
  const stamp=new Intl.DateTimeFormat('es-MX',{timeZone:'America/Mexico_City',dateStyle:'short',timeStyle:'medium'}).format(now);
  const where=isTable?'Mesa: '+Number(tableText):'Para llevar. Nombre del pedido en caja: '+takeaway;
- const message=['Hola, ya me registré en El Taconazo Club.','Cliente: '+customerName,where,'Hora del aviso: '+stamp+' (México)','¿Me ayudan a localizar mi consumo para acumular mis puntos?'].join('\\n');
+ const message=['Hola, ya me registré en El Taconazo Club.','Cliente: '+customerName,where,'Hora del aviso: '+stamp+' (México)','¿Me ayudan a localizar mi consumo para acumular mis puntos?'].join('\n');
  const url='https://wa.me/524361082946?text='+encodeURIComponent(message);
  setStatus('noticeStatus','WhatsApp se abrirá con el mensaje preparado. Confirma el envío dentro de WhatsApp.',true);
  const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.append(link);link.click();link.remove();
