@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Tarjetas físicas | El Taconazo Club</title>
+<style>
+:root{--red:#a91f32;--yellow:#e5b52c;--ink:#171717;--muted:#686868;--line:#e7e2dc}
+*{box-sizing:border-box}
+body{margin:0;background:#f6f5f3;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.toolbar{max-width:980px;margin:22px auto 16px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.toolbar h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.04em}
+.toolbar p{font-size:12px;color:var(--muted);margin:5px 0 0}
+button{border:0;border-radius:999px;background:var(--red);color:#fff;padding:12px 19px;font-weight:700;font-size:14px;cursor:pointer}
+main{max-width:980px;margin:0 auto;padding:0 18px 36px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px}
+.card-shell{background:#fff;border:1px solid #e9e5df;border-radius:14px;padding:14px;box-shadow:0 5px 18px #1717170a}
+.card{position:relative;isolation:isolate;overflow:hidden;width:100%;aspect-ratio:85.6/54;background:#fff;border:1px solid #dedbd6;border-radius:3.2mm;padding:5.2% 5.5%;display:flex;flex-direction:column}
+.card:before,.card:after{content:"";position:absolute;z-index:-1;right:-17mm;bottom:-22mm;border:3.2mm solid var(--red);width:48mm;height:38mm;border-radius:50%;transform:rotate(-22deg)}
+.card:after{right:-20mm;bottom:-24mm;border-color:var(--yellow);width:44mm;height:34mm;border-width:1.5mm}
+.brand{display:flex;align-items:center;gap:9px}
+.brand-mark{width:29px;height:29px;border:2px solid var(--red);border-radius:9px;display:grid;place-items:center;color:var(--red);font-weight:900;font-size:12px;letter-spacing:-.08em}
+.brand-name{font-size:clamp(11px,2vw,16px);font-weight:900;letter-spacing:.09em;line-height:1.05}
+.brand-name span{display:block;color:var(--red);font-size:.72em;letter-spacing:.22em;margin-top:3px}
+.card-main{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:1;padding:4% 0 2%}
+.member{min-width:0}
+.eyebrow{font-size:clamp(6px,1.05vw,9px);font-weight:700;color:#777;letter-spacing:.18em}
+.member-label{font-size:clamp(8px,1.25vw,11px);font-weight:800;letter-spacing:.19em;margin-top:8px;color:var(--red)}
+.member-number{font-size:clamp(27px,6.3vw,49px);line-height:.98;font-weight:900;letter-spacing:.025em;margin-top:5px;font-variant-numeric:tabular-nums}
+.member-name{font-size:clamp(8px,1.3vw,12px);font-weight:700;margin-top:7px;max-width:100%;overflow-wrap:anywhere}
+.qr-side{display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 0 28%;max-width:29%}
+.qr{width:min(100%,27mm);aspect-ratio:1;background:#fff;display:grid;place-items:center}
+.qr img,.qr canvas{width:100%!important;height:100%!important;image-rendering:pixelated}
+.qr-caption{font-size:clamp(5px,.8vw,7px);line-height:1.2;text-align:center;color:#666;letter-spacing:.08em;font-weight:700}
+.card-foot{display:flex;align-items:center;gap:5px;min-height:13px}
+.shield{width:17px;height:19px;flex:0 0 auto}
+.fresh{font-size:clamp(5px,.8vw,7px);font-weight:800;letter-spacing:.1em;color:#57514a;line-height:1.1}
+.fresh small{display:block;font-size:.82em;font-weight:600;letter-spacing:.08em;color:#8a8178;margin-top:2px}
+.card-index{font-size:11px;color:#777;margin:10px 2px 0}
+.scanned{max-width:480px;margin:8vh auto;padding:0 18px}
+.scanned .card{aspect-ratio:85.6/54;max-width:480px;margin:auto}
+.scanned-note{text-align:center;color:#5d5d5d;font-size:13px;line-height:1.55;margin:18px auto 0;max-width:390px}
+.hidden{display:none!important}
+@media(max-width:520px){.toolbar{align-items:flex-start}.toolbar h1{font-size:15px}.toolbar p{max-width:230px}.card-shell{padding:9px}.cards{grid-template-columns:1fr}}
+@media print{
+ @page{size:A4 portrait;margin:12mm}
+ body{background:#fff}
+ .toolbar,.card-index,.screen-only{display:none!important}
+ main{max-width:none;padding:0}
+ .cards{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+ .card-shell{padding:0;border:0;border-radius:0;box-shadow:none;break-inside:avoid}
+ .card{width:85.6mm;height:54mm;aspect-ratio:auto;border-radius:3.2mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .qr{width:25mm}
+}
+</style>
+</head>
+<body>
+<header class="toolbar" id="toolbar">
+ <div><h1>EL TACONAZO CLUB · TARJETAS FÍSICAS</h1><p>Tres tarjetas independientes. Sin conexión al sistema digital de puntos.</p></div>
+ <button type="button" onclick="window.print()">Imprimir tarjetas</button>
+</header>
+<main>
+ <section id="printView" class="cards" aria-label="Tarjetas físicas">
+  <article class="card-shell"><div class="card" data-card="0001">
+   <div class="brand"><div class="brand-mark">T</div><div class="brand-name">EL TACONAZO<span>CLUB</span></div></div>
+   <div class="card-main"><div class="member"><div class="eyebrow">IDENTIFICACIÓN DE SOCIO</div><div class="member-label">SOCIO</div><div class="member-number">0001</div><div class="member-name"></div></div><div class="qr-side"><div class="qr" id="qr-0001"></div><div class="qr-caption">ESCANEA PARA IDENTIFICAR TU TARJETA</div></div></div>
+   <div class="card-foot"><svg class="shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div></div>
+  </div><div class="card-index">Tarjeta física · Socio 0001</div></article>
+  <article class="card-shell"><div class="card" data-card="0002">
+   <div class="brand"><div class="brand-mark">T</div><div class="brand-name">EL TACONAZO<span>CLUB</span></div></div>
+   <div class="card-main"><div class="member"><div class="eyebrow">IDENTIFICACIÓN DE SOCIO</div><div class="member-label">SOCIO</div><div class="member-number">0002</div><div class="member-name"></div></div><div class="qr-side"><div class="qr" id="qr-0002"></div><div class="qr-caption">ESCANEA PARA IDENTIFICAR TU TARJETA</div></div></div>
+   <div class="card-foot"><svg class="shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div></div>
+  </div><div class="card-index">Tarjeta física · Socio 0002</div></article>
+  <article class="card-shell"><div class="card" data-card="0003">
+   <div class="brand"><div class="brand-mark">T</div><div class="brand-name">EL TACONAZO<span>CLUB</span></div></div>
+   <div class="card-main"><div class="member"><div class="eyebrow">IDENTIFICACIÓN DE SOCIO</div><div class="member-label">SOCIO</div><div class="member-number">0003</div><div class="member-name"></div></div><div class="qr-side"><div class="qr" id="qr-0003"></div><div class="qr-caption">ESCANEA PARA IDENTIFICAR TU TARJETA</div></div></div>
+   <div class="card-foot"><svg class="shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div></div>
+  </div><div class="card-index">Tarjeta física · Socio 0003</div></article>
+ </section>
+ <section id="scanView" class="scanned hidden">
+  <div class="card" id="scannedCard">
+   <div class="brand"><div class="brand-mark">T</div><div class="brand-name">EL TACONAZO<span>CLUB</span></div></div>
+   <div class="card-main"><div class="member"><div class="eyebrow">IDENTIFICACIÓN DE SOCIO</div><div class="member-label">SOCIO</div><div class="member-number" id="scanNumber">0001</div><div class="member-name" id="scanName"></div></div></div>
+   <div class="card-foot"><svg class="shield" viewBox="0 0 24 27" aria-hidden="true"><path d="M12 1.5 21 5v7.1c0 6.1-3.8 10.2-9 13.2-5.2-3-9-7.1-9-13.2V5z" fill="#fff" stroke="#a91f32" stroke-width="1.8"/><path d="m7.5 13.3 3 3 6-6" fill="none" stroke="#e5b52c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="fresh">TACO RECIÉN SALIDO<small>INSIGNIA DE HIGIENE</small></div></div>
+  </div>
+  <p class="scanned-note" id="scanMessage">Esta es la identificación de tu tarjeta física de El Taconazo Club.</p>
+ </section>
+ <p class="screen-only" id="qrError" style="text-align:center;color:#8b2635;font-size:12px"></p>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* Para asignar un nombre, se actualiza únicamente este registro.
+   Los QR y los números de socio no cambian. */
+const SOCIOS = {
+ "0001": "",
+ "0002": "",
+ "0003": ""
+};
+const ids=Object.keys(SOCIOS);
+const params=new URLSearchParams(location.search);
+const socio=params.get("socio");
+if(socio){
+ const id=ids.includes(socio)?socio:null;
+ document.getElementById("toolbar").classList.add("hidden");
+ document.getElementById("printView").classList.add("hidden");
+ document.getElementById("scanView").classList.remove("hidden");
+ if(!id){
+  document.getElementById("scanMessage").textContent="No encontramos ese número de tarjeta. Verifica el QR con el establecimiento.";
+  document.getElementById("scanNumber").textContent="----";
+ }else{
+  document.getElementById("scanNumber").textContent=id;
+  const name=SOCIOS[id].trim();
+  document.getElementById("scanName").textContent=name;
+  document.getElementById("scanMessage").textContent=name
+   ?"Esta tarjeta física está identificada a nombre de "+name+"."
+   :"Esta tarjeta física corresponde al socio "+id+". El nombre se asignará cuando el establecimiento registre al titular.";
+ }
+}else{
+ if(typeof QRCode==="undefined"){
+  document.getElementById("qrError").textContent="No se pudo cargar el generador de QR. Revisa tu conexión e intenta actualizar la página.";
+ }else{
+  ids.forEach(id=>{
+   const target=new URL(location.href);
+   target.search="";
+   target.hash="";
+   target.searchParams.set("socio",id);
+   new QRCode(document.getElementById("qr-"+id),{
+    text:target.toString(),width:240,height:240,colorDark:"#111111",colorLight:"#ffffff",
+    correctLevel:QRCode.CorrectLevel.H
+   });
+  });
+ }
+}
+</script>
+</body>
+</html>
