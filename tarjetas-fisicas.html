@@ -49,8 +49,6 @@ main{max-width:980px;margin:0 auto;padding:0 18px 36px}
 .scan-state-dot{width:7px;height:7px;border-radius:50%}
 .scan-state.is-red{background:#fde8e8;color:#a51f2d}
 .scan-state.is-red .scan-state-dot{background:#c52d3b}
-.scan-state.is-orange{background:#fff0db;color:#a75b08}
-.scan-state.is-orange .scan-state-dot{background:#e58a19;animation:scanPulse 1s infinite}
 .scan-state.is-green{background:#e5f6eb;color:#187544}
 .scan-state.is-green .scan-state-dot{background:#239b5a}
 @keyframes scanPulse{50%{opacity:.35}}
@@ -142,7 +140,6 @@ if(socio){
  const id=ids.includes(socio)?socio:null;
  const state=document.getElementById("scanState");
  const stateText=document.getElementById("scanStateText");
- const requestedState=params.get("estado");
  document.getElementById("toolbar").classList.add("hidden");
  document.getElementById("printView").classList.add("hidden");
  document.getElementById("scanView").classList.remove("hidden");
