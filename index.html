@@ -116,6 +116,19 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <div class="stats"><div class="stat"><strong id="cardPoints">0</strong><span>Puntos disponibles</span></div><div class="stat"><strong id="cardLifetime">0</strong><span>Puntos acumulados</span></div></div>
 <p id="progressText" class="muted"></p><div class="track" role="progressbar" id="progressTrack" aria-label="Progreso al siguiente rango" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress" id="progressBar"></div></div>
 <div class="note hidden" id="readyPrizeBanner" role="status"><strong>🎉 ¡Ya te alcanzan tus puntos para un premio!</strong><p id="readyPrizeMessage"></p><button class="full" id="seePrizes">Ver premios disponibles</button></div>
+<section id="registrationNotice" class="note" style="margin-top:18px;border:1px solid #a86a38">
+<h3 style="margin:0 0 8px">Avisar que ya me registré</h3>
+<p class="muted">Ayúdanos a encontrar tu consumo en Soft Restaurant y asignarte tus puntos. El aviso se envía por WhatsApp al personal.</p>
+<form id="noticeForm">
+<label for="noticeType">¿Cómo hiciste tu pedido?</label>
+<select id="noticeType"><option value="mesa">Comí en el restaurante</option><option value="llevar">Pedí para llevar</option></select>
+<div id="noticeTableBox"><label for="noticeTable">Número de mesa</label><input id="noticeTable" inputmode="numeric" type="number" min="1" max="999" placeholder="Ej. 6" required></div>
+<div id="noticeTakeawayBox" class="hidden"><label for="noticeTakeawayName">Nombre que dieron al personal para el pedido</label><input id="noticeTakeawayName" maxlength="100" placeholder="Ej. Emiliano" autocomplete="off"></div>
+<button type="submit" class="full" id="noticeSubmit">Enviar aviso por WhatsApp</button>
+</form>
+<p class="muted">Se abrirá WhatsApp con el aviso listo. Debes pulsar Enviar. El aviso no agrega puntos automáticamente.</p>
+<p id="noticeStatus" class="status" role="status"></p>
+</section>
 <button class="full" id="customerRefresh" style="margin-top:18px">Actualizar puntos</button><p class="note"><strong>💰 Tú decides:</strong> puedes guardar tus puntos disponibles para un premio más grande o canjearlos por uno que ya puedas pagar. Solo el encargado puede descontarlos al confirmar tu canje. Tus puntos acumulados siguen contando para subir de rango.</p>
 </div>
 <div class="customer-tab hidden" id="tabAccount">
@@ -281,6 +294,35 @@ renderCustomerPrizes(d);
 renderBadges(total);
 $('cardName').textContent=displayName(d);$('cardRank').textContent=ranks[i][0];$('cardLevel').textContent='NIVEL '+(i+1);$('cardPoints').textContent=formattedPoints(pts(d));$('cardLifetime').textContent=formattedPoints(total);$('progressText').textContent=next?`Te faltan ${next[1]-total} puntos acumulados para ${next[0]}.`:'🏆 ¡Llegaste al rango máximo del Club!';const progress=next?Math.max(0,Math.min(100,Math.round((total-ranks[i][1])*100/(next[1]-ranks[i][1])))):100;$('progressBar').style.width=progress+'%';$('progressTrack').setAttribute('aria-valuenow',String(progress))}
 async function openCustomer(user,notifyGain=false){try{const snapshot=await getDoc(doc(db,'clientes',user.uid));if(!snapshot.exists()){showAccountIssue(user,'Tu cuenta existe, pero todavía no tiene ficha de puntos. Solicita ayuda al encargado; no te registres otra vez.');return}showCustomerShell();renderCard(snapshot.data());notifyPointsWhenChanged(user.uid,pts(snapshot.data()),notifyGain);setStatus('customerStatus','',true)}catch(err){showAccountIssue(user,'No se pudo abrir tu tarjeta: '+reportError(err)+'. No te registres de nuevo.')}}
+// Aviso voluntario a caja para localizar mesa o pedido para llevar.
+// No escribe datos en Firestore ni modifica saldos.
+const noticeType=$('noticeType');
+noticeType.onchange=()=>{
+ const isTable=noticeType.value==='mesa';
+ toggle('noticeTableBox',isTable);
+ toggle('noticeTakeawayBox',!isTable);
+ $('noticeTable').required=isTable;
+ $('noticeTakeawayName').required=!isTable;
+};
+$('noticeForm').addEventListener('submit',event=>{
+ event.preventDefault();
+ const user=auth.currentUser;
+ if(!user||user.uid===ADMIN_UID){setStatus('noticeStatus','Entra con tu cuenta de cliente para enviar el aviso.');return;}
+ const customerName=String(visibleCustomerName||'').trim();
+ if(customerName.length<3||customerName==='Cliente'){setStatus('noticeStatus','No se pudo leer tu nombre. Actualiza tu tarjeta e intenta otra vez.');return;}
+ const isTable=noticeType.value==='mesa';
+ const tableText=$('noticeTable').value.trim();
+ const takeaway=$('noticeTakeawayName').value.trim().replace(/\\s+/g,' ');
+ if(isTable&&(!/^\\d{1,3}$/.test(tableText)||Number(tableText)<1)){setStatus('noticeStatus','Escribe un número de mesa válido.');return;}
+ if(!isTable&&takeaway.length<2){setStatus('noticeStatus','Escribe el nombre con el que el personal registró tu pedido.');return;}
+ const now=new Date();
+ const stamp=new Intl.DateTimeFormat('es-MX',{timeZone:'America/Mexico_City',dateStyle:'short',timeStyle:'medium'}).format(now);
+ const where=isTable?'Mesa: '+Number(tableText):'Para llevar. Nombre del pedido en caja: '+takeaway;
+ const message=['Hola, ya me registré en El Taconazo Club.','Cliente: '+customerName,where,'Hora del aviso: '+stamp+' (México)','¿Me ayudan a localizar mi consumo para acumular mis puntos?'].join('\\n');
+ const url='https://wa.me/524361082946?text='+encodeURIComponent(message);
+ setStatus('noticeStatus','WhatsApp se abrirá con el mensaje preparado. Confirma el envío dentro de WhatsApp.',true);
+ const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.append(link);link.click();link.remove();
+});
 $('customerRefresh').onclick=()=>{prepareClubSound();const user=auth.currentUser;if(user&&user.uid!==ADMIN_UID)openCustomer(user,true)};
 
 let visibleCustomerPoints=0,visibleCustomerName='Cliente',selectedRewardForPhoto=null;
