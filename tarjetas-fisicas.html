@@ -155,11 +155,7 @@ if(socio){
  }else{
   document.getElementById("scanNumber").textContent=id;
   const name=SOCIOS[id].trim();
-  if(requestedState==="actualizando"){
-   state.className="scan-state is-orange";
-   stateText.textContent="ACTUALIZANDO PUNTOS";
-   document.getElementById("scanMessage").textContent="Estamos actualizando la información de tus puntos. Espera un momento y vuelve a consultar.";
-  }else if(name){
+  if(name){
    state.className="scan-state is-green";
    stateText.textContent="TARJETA RECONOCIDA";
    document.getElementById("scanMessage").textContent="Esta tarjeta física está asignada a "+name+". Conserva este número de socio para identificar tu tarjeta.";
