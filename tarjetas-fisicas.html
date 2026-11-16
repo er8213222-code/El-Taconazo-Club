@@ -131,11 +131,13 @@ const SOCIOS = {
  "0002": "",
  "0003": ""
 };
+const SALCEADO = {"0001": "Tío Luis"};
 const ids=Object.keys(SOCIOS);
 const params=new URLSearchParams(location.search);
 const socio=params.get("socio");
+const esSalceado=params.get("tipo")==="salceado";
 if(socio){
- const id=ids.includes(socio)?socio:null;
+ const id=(esSalceado?Object.keys(SALCEADO):ids).includes(socio)?socio:null;
  const state=document.getElementById("scanState");
  const stateText=document.getElementById("scanStateText");
  document.getElementById("toolbar").classList.add("hidden");
@@ -149,7 +151,8 @@ if(socio){
   document.getElementById("scanMessage").textContent="No encontramos este número de socio. Revisa el código QR o consulta al personal de El Taconazo.";
  }else{
   document.getElementById("scanNumber").textContent=id;
-  const name=SOCIOS[id].trim();
+  const name=(esSalceado?SALCEADO[id]:SOCIOS[id]).trim();
+  if(esSalceado){document.querySelector(".scan-brand-sub").textContent="TAQUITO BIEN SALCEADO · IDENTIFICACIÓN DE SOCIO";document.querySelector(".scan-fresh").firstChild.textContent="TAQUITO BIEN SALCEADO";}
   if(name){
    state.className="scan-state is-green";
    stateText.textContent="TARJETA RECONOCIDA";
