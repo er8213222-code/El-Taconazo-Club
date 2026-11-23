@@ -322,6 +322,8 @@ $('noticeForm').addEventListener('submit',event=>{
  const url='https://wa.me/524361082946?text='+encodeURIComponent(message);
  setStatus('noticeStatus','WhatsApp se abrirá con el mensaje preparado. Confirma el envío dentro de WhatsApp.',true);
  const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.append(link);link.click();link.remove();
+ // Ocultar el aviso después de abrir WhatsApp; el envío se confirma dentro de WhatsApp.
+ toggle('registrationNotice',false);
 });
 $('customerRefresh').onclick=()=>{prepareClubSound();const user=auth.currentUser;if(user&&user.uid!==ADMIN_UID)openCustomer(user,true)};
 
