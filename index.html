@@ -218,6 +218,35 @@ async function playClubSound(){
     await new Audio('./sonido-exito.mp3').play();
   }catch(e){}
 }
+// Efecto corto tipo «ñam» para los botones: sin música ni audio de fondo.
+function playButtonSound(){
+  try{
+    const Engine=window.AudioContext||window.webkitAudioContext;
+    if(!Engine)return;
+    if(!clubAudioContext)clubAudioContext=new Engine();
+    const ctx=clubAudioContext;
+    if(ctx.state==='suspended')void ctx.resume().catch(()=>{});
+    const start=ctx.currentTime;
+    [[430,245,0,.12],[310,175,.055,.14]].forEach(([from,to,delay,duration])=>{
+      const osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.type='triangle';
+      osc.frequency.setValueAtTime(from,start+delay);
+      osc.frequency.exponentialRampToValueAtTime(to,start+delay+duration);
+      gain.gain.setValueAtTime(.0001,start+delay);
+      gain.gain.exponentialRampToValueAtTime(.16,start+delay+.012);
+      gain.gain.exponentialRampToValueAtTime(.0001,start+delay+duration);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start+delay);
+      osc.stop(start+delay+duration+.01);
+    });
+  }catch(e){}
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest('button,[role="button"]');
+  if(!button||button.disabled||button.getAttribute('aria-disabled')==='true')return;
+  playButtonSound();
+},true);
+
 // Solo avisa cuando la persona pulsa Actualizar y el saldo subió desde la última consulta.
 function notifyPointsWhenChanged(userId,newBalance,isRefresh){
   const key='taconazo-vistos-'+userId;
