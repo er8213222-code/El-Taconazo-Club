@@ -319,7 +319,7 @@ $('noticeForm').addEventListener('submit',event=>{
  const stamp=new Intl.DateTimeFormat('es-MX',{timeZone:'America/Mexico_City',dateStyle:'short',timeStyle:'medium'}).format(now);
  const where=isTable?'Mesa: '+Number(tableText):'Para llevar. Nombre del pedido en caja: '+takeaway;
  const message=['Hola, ya me registré en El Taconazo Club.','Cliente: '+customerName,where,'Hora del aviso: '+stamp+' (México)','¿Me ayudan a localizar mi consumo para acumular mis puntos?'].join('\n');
- const url='https://wa.me/524361082946?text='+encodeURIComponent(message);
+ const url='https://wa.me/524435319518?text='+encodeURIComponent(message);
  setStatus('noticeStatus','WhatsApp se abrirá con el mensaje preparado. Confirma el envío dentro de WhatsApp.',true);
  const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';document.body.append(link);link.click();link.remove();
  // Ocultar el aviso después de abrir WhatsApp; el envío se confirma dentro de WhatsApp.
