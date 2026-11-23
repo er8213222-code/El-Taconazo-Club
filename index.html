@@ -47,8 +47,8 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 .badge-news p{margin:5px 0 12px;color:#e8d9d4;font-size:14px}
 .badge-news button{width:100%;background:linear-gradient(100deg,#d18a43,#a92d39);font-weight:900}
 .badge-news .news-icon{font-size:30px;float:right;margin-left:10px;filter:drop-shadow(0 3px 8px #0008)}
-.badge-item.newly-unlocked{animation:badgeReveal .85s ease both;border-color:#ffd078;box-shadow:0 0 0 2px #ffca6844,0 0 24px #e9a34b55}
-@keyframes badgeReveal{0%{transform:scale(.82);filter:brightness(.25);opacity:.3}65%{transform:scale(1.07);filter:brightness(1.5);opacity:1}100%{transform:scale(1);filter:brightness(1);opacity:1}}
+.badge-item.newly-unlocked{animation:badgeReveal 2.6s cubic-bezier(.2,.75,.25,1) both;border-color:#ffd078;box-shadow:0 0 0 2px #ffca6844,0 0 24px #e9a34b55}
+@keyframes badgeReveal{0%{transform:scale(.78);filter:brightness(.35);opacity:.25}22%{transform:scale(.88);filter:brightness(.65);opacity:.55}52%{transform:scale(1.09);filter:brightness(1.45);opacity:1}72%{transform:scale(1.035);filter:brightness(1.18);opacity:1}88%{transform:scale(1.015);filter:brightness(1.06);opacity:1}100%{transform:scale(1);filter:brightness(1);opacity:1}}
 @media(prefers-reduced-motion:reduce){.badge-item.newly-unlocked{animation:none}}
 @media(min-width:650px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:650px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:16px 16px 0 0}}
 
