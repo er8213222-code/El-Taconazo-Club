@@ -40,6 +40,16 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 .badge-item.unlocked{border-color:#ae6060;background:linear-gradient(145deg,#322022,#44272c)}
 .badge-item.unlocked small{color:#b5e4b7}
 #tabPrizes .reward{padding:14px 2px}
+/* Aviso de insignia recién desbloqueada */
+.badge-news{margin:14px 0 18px;padding:17px;border:1px solid var(--theme-accent);border-radius:16px;background:linear-gradient(125deg,#432329,#241b20 72%);box-shadow:0 8px 22px #0006;position:relative;overflow:hidden}
+.badge-news .news-kicker{font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:#ffd08a}
+.badge-news h3{margin:5px 0 6px;font-size:20px;color:#fff}
+.badge-news p{margin:5px 0 12px;color:#e8d9d4;font-size:14px}
+.badge-news button{width:100%;background:linear-gradient(100deg,#d18a43,#a92d39);font-weight:900}
+.badge-news .news-icon{font-size:30px;float:right;margin-left:10px;filter:drop-shadow(0 3px 8px #0008)}
+.badge-item.newly-unlocked{animation:badgeReveal .85s ease both;border-color:#ffd078;box-shadow:0 0 0 2px #ffca6844,0 0 24px #e9a34b55}
+@keyframes badgeReveal{0%{transform:scale(.82);filter:brightness(.25);opacity:.3}65%{transform:scale(1.07);filter:brightness(1.5);opacity:1}100%{transform:scale(1);filter:brightness(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.badge-item.newly-unlocked{animation:none}}
 @media(min-width:650px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:650px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:16px 16px 0 0}}
 
 
@@ -111,6 +121,7 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <section class="panel hidden" id="customer">
 <p id="customerStatus" class="status" role="status"></p>
 <div class="customer-tab" id="tabHome">
+<section class="badge-news hidden" id="homeBadgeNews" aria-live="polite"><span class="news-icon" aria-hidden="true">🏆</span><div class="news-kicker">Novedad del Club</div><h3>¡Nueva insignia desbloqueada!</h3><p id="homeBadgeNewsText">Has conseguido un nuevo rango.</p><button type="button" id="homeBadgeNewsButton">Ver insignia</button></section>
 <h2>Mi tarjeta digital</h2>
 <div class="membercard"><div class="memberbrand">EL TACONAZO CLUB</div><div class="level" id="cardLevel">NIVEL 1</div><div class="rank" id="cardRank">🌮 Taco Recién Salido</div><div class="membername" id="cardName">Mi tarjeta</div></div>
 <div class="stats"><div class="stat"><strong id="cardPoints">0</strong><span>Puntos disponibles</span></div><div class="stat"><strong id="cardLifetime">0</strong><span>Puntos acumulados</span></div></div>
@@ -153,6 +164,7 @@ button:not(.secondary):not(.ghost):not(.danger):not(.staff):not(.theme-dot):not(
 <div class="customer-tab hidden" id="tabBadges">
 <h2>Insignias · Mis rangos</h2>
 <p class="muted">Cada escudo se desbloquea con puntos acumulados, aunque canjees recompensas.</p>
+<section class="badge-news hidden" id="tabBadgeNews" aria-live="polite"><span class="news-icon" aria-hidden="true">✨</span><div class="news-kicker">Tu nuevo logro</div><h3>¡Esta insignia ya es tuya!</h3><p id="tabBadgeNewsText">Acabas de desbloquear un nuevo rango.</p><button type="button" id="tabBadgeNewsButton">Ver insignia desbloqueada</button></section>
 <div class="badge-grid" id="badgeGrid"></div>
 <p id="badgeSummary" class="note"></p>
 <div class="track" role="progressbar" id="badgeProgressTrack" aria-label="Progreso del rango actual" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="badgeProgressBar" class="progress"></div></div><p id="badgeProgressText" class="muted"></p>
@@ -283,6 +295,39 @@ document.querySelectorAll('[data-theme]').forEach(b=>b.setAttribute('aria-presse
 try{localStorage.setItem('taconazo-theme',name)}catch(e){}
 }
 function showTab(which){const tabs=['Home','Account','Badges','Prizes'];if(!tabs.includes(which))which='Home';tabs.forEach(t=>toggle('tab'+t,t===which));document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===which;b.classList.toggle('nav-active',active);b.setAttribute('aria-current',active?'page':'false')});window.scrollTo({top:0,behavior:'instant'})}
+function badgeNoticeStorageKey(uid){return 'taconazo-badge-news-'+uid}
+function updateBadgeUnlockNotice(uid,total){
+ if(!uid)return;
+ const key=badgeNoticeStorageKey(uid),current=rankIndex(total);
+ let state=null,previous=null;
+ try{state=JSON.parse(localStorage.getItem(key)||'null');if(state&&Number.isSafeInteger(state.lastRank))previous=state.lastRank}catch(e){}
+ if(previous===null){state={lastRank:current,pending:null};}
+ else if(current>previous){state={lastRank:current,pending:{index:current,seen:false}};}
+ else if(!state||typeof state!=='object'){state={lastRank:current,pending:null};}
+ else state.lastRank=current;
+ try{localStorage.setItem(key,JSON.stringify(state))}catch(e){}
+ const pending=state.pending&&!state.pending.seen&&Number.isSafeInteger(state.pending.index)?state.pending:null;
+ const name=pending?ranks[pending.index]?.[0]:'';
+ toggle('homeBadgeNews',!!pending);toggle('tabBadgeNews',!!pending);
+ if(pending){
+  $('homeBadgeNewsText').textContent='Desbloqueaste '+name+'. ¡Ve a Insignias para descubrir tu nuevo logro!';
+  $('tabBadgeNewsText').textContent='Tu nuevo rango es '+name+'. Está resaltado entre tus insignias.';
+ }
+}
+function markBadgeNewsSeenAndReveal(){
+ const uid=auth.currentUser?.uid;if(!uid)return;
+ const key=badgeNoticeStorageKey(uid);let state=null;
+ try{state=JSON.parse(localStorage.getItem(key)||'null')}catch(e){}
+ const index=state?.pending?.index;
+ if(!Number.isSafeInteger(index))return;
+ state.pending.seen=true;
+ try{localStorage.setItem(key,JSON.stringify(state))}catch(e){}
+ toggle('homeBadgeNews',false);toggle('tabBadgeNews',false);
+ const item=$('badgeGrid').children[index];
+ if(item){item.classList.add('newly-unlocked');item.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+$('homeBadgeNewsButton').onclick=()=>showTab('Badges');
+$('tabBadgeNewsButton').onclick=markBadgeNewsSeenAndReveal;
 function renderBadges(total){const grid=$('badgeGrid');grid.replaceChildren();ranks.forEach(([name,threshold],idx)=>{const unlocked=total>=threshold,next=ranks[idx+1]?.[1];const box=document.createElement('div');box.className='badge-item'+(unlocked?' unlocked':' locked');const shield=document.createElement('div');shield.className='badge-shield';shield.textContent=unlocked?'🛡️':'⬡';const title=document.createElement('strong');title.textContent=name;const hint=document.createElement('small');hint.textContent=unlocked?'✓ Desbloqueada':('Faltan '+formattedPoints(threshold-total)+' pts · '+formattedPoints(total)+' / '+formattedPoints(threshold));box.append(shield,title,hint);grid.append(box)});const i=rankIndex(total),next=ranks[i+1],levelMin=ranks[i][1];const value=next?Math.max(0,Math.min(100,Math.round((total-levelMin)*100/(next[1]-levelMin)))):100;$('badgeSummary').textContent=(i+1)+' de '+ranks.length+' rangos desbloqueados · '+formattedPoints(total)+' puntos acumulados';$('badgeProgressBar').style.width=value+'%';$('badgeProgressTrack').setAttribute('aria-valuenow',String(value));$('badgeProgressText').textContent=next?('Faltan '+formattedPoints(next[1]-total)+' puntos para '+next[0]):'¡Completaste los 12 rangos!'}
 
 const normalize=s=>String(s||'').trim().toLocaleLowerCase('es-MX').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
@@ -321,6 +366,7 @@ $('profilePhone').textContent=String(d.telefono||'No registrado');
 $('rewardsBalance').textContent=formattedPoints(pts(d));
 renderCustomerPrizes(d);
 renderBadges(total);
+updateBadgeUnlockNotice(auth.currentUser?.uid,total);
 $('cardName').textContent=displayName(d);$('cardRank').textContent=ranks[i][0];$('cardLevel').textContent='NIVEL '+(i+1);$('cardPoints').textContent=formattedPoints(pts(d));$('cardLifetime').textContent=formattedPoints(total);$('progressText').textContent=next?`Te faltan ${next[1]-total} puntos acumulados para ${next[0]}.`:'🏆 ¡Llegaste al rango máximo del Club!';const progress=next?Math.max(0,Math.min(100,Math.round((total-ranks[i][1])*100/(next[1]-ranks[i][1])))):100;$('progressBar').style.width=progress+'%';$('progressTrack').setAttribute('aria-valuenow',String(progress))}
 async function openCustomer(user,notifyGain=false){try{const snapshot=await getDoc(doc(db,'clientes',user.uid));if(!snapshot.exists()){showAccountIssue(user,'Tu cuenta existe, pero todavía no tiene ficha de puntos. Solicita ayuda al encargado; no te registres otra vez.');return}showCustomerShell();renderCard(snapshot.data());notifyPointsWhenChanged(user.uid,pts(snapshot.data()),notifyGain);setStatus('customerStatus','',true)}catch(err){showAccountIssue(user,'No se pudo abrir tu tarjeta: '+reportError(err)+'. No te registres de nuevo.')}}
 // Aviso voluntario a caja para localizar mesa o pedido para llevar.
